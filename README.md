@@ -1,0 +1,6 @@
+# v-colorpicker
+
+## Over the years, many color pickers have been built...
+...And this is one of them.
+
+Code is messy and buggy right now. Did this on a saturday, so ...
