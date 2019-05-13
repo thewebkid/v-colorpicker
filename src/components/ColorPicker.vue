@@ -11,8 +11,9 @@
           <ChannelInput v-for="(l,i) in rgbLabels" :key="i" :lbl="l" :max="255" :h="128" :preview-color="previewColor"
                         @channel-change="channelChange"/>
 
-          <ChannelInput lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
+          <ChannelInput v-if="previewColor.a !== undefined" lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
                         @channel-change="channelChange"/>
+          <a v-else @click="addAlpha" style="margin-top:19px;display: block;cursor: pointer">+ Alpha</a>
 
         </td>
         <td class="input-col" valign="top" v-if="hsw && hsw.wl">
@@ -37,7 +38,7 @@
       </tr>
       <tr v-else>
         <td colspan="3">
-          <SimpleCanvas :hsv="previewColor.HSV"/>
+          <SimpleCanvas :hsv="previewColor.HSV" @variantchange="variantChange"/>
         </td>
       </tr>
       <tr v-if="advanced">
@@ -67,14 +68,12 @@
 
         </td>
         <td v-else style="vertical-align: top;padding-top:8px;">
-          <div class="hsvv">
-            <movable class="bar" :horizontal="[-simpleVBgPos.left,120-simpleVBgPos.left]" :style="{background:simpleVBgPos.bg,left:simpleVBgPos.left+'px'}"/>
-          </div>
+          <hsvv :hsv="previewColor.HSV" @hsvvChange="variantChange"/>
         </td>
         <td  style="padding-top:1px">
           <a class="btn-lg btn-dark btn-outline float-right" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
             OK
-            <span class="dswatch" :style="{'background-color': previewColor.hex}"></span>
+            <span class="dswatch" :style="{'background-color': previewColor.rgbaString}"></span>
           </a>
           <!--<b-form-radio-group class="hsw-radios">
             <b-form-radio v-model="mode" value="hsl">HSL</b-form-radio>
@@ -103,6 +102,7 @@
   import VariantSquare from './variant-square';
   import {Color} from '../color';
   import SimpleCanvas from "./SimpleCanvas";
+  import hsvv from "./HSVV";
 
   const rgb = 'rgb';
   const isHsl = c => rgb.indexOf(c) === -1;
@@ -128,17 +128,9 @@
         hsw.w = hsl ? hsw.l : hsw.v;
         hsw.wl = hsl ? 'Lum' : 'Val';
         return hsw;
-      },
-      simpleVBgPos(){
-        let v = this.previewColor.HSV.v;
-        let byte = Math.round(v*2.55);
-        return{
-          bg:new Color([byte,byte,byte]).hex,
-          left:v*1.2
-        }
       }
     },
-    components: {SimpleCanvas, RangeFlyout, ChannelInput, allFormatsPopover,VariantSquare},
+    components: {SimpleCanvas, RangeFlyout, ChannelInput, allFormatsPopover,VariantSquare,hsvv},
     name: 'ColorPicker',
     props: [
       'value'
@@ -155,6 +147,9 @@
       });
     },
     methods: {
+      addAlpha(){
+        this.previewColor = new  Color(Object.assign(this.previewColor.rgbObj,{a:1}));
+      },
       channelChange({c, v}) {
         const vm = this;
         if (isHsl(c)) {
@@ -175,6 +170,7 @@
       variantChange(updatedColor){
         this.previewColor = updatedColor;
       }
+
     }
   }
 </script>
@@ -210,17 +206,12 @@
         .dswatch {
           margin-left:5px;
           display: inline-block;
-          //vertical-align: middle;
           height: 15px;
           width: 15px;
           border-radius: 2px;
           box-shadow: 0 0 1px #fff, inset 0 0 1px #eee;
           background: white;
         }
-      }
-      .hsw-radios{
-        display:inline-block;
-        margin:12px 0 0 16px;
       }
     }
     td.input-col {
@@ -236,15 +227,15 @@
     .hsvv{
       position:relative;
       height:20px;
-      width:120px;
-      background:linear-gradient(90deg, white, black);
+      width:200px;
+      background:linear-gradient(90deg, black, white);
       border:solid 1px #888;
       border-radius:3px;
       margin:0 0 10px 10px;
       .bar{
         height:24px;
-        width:8px;
-        margin:-2px -4px;
+        width:12px;
+        margin:-2px -6px;
         position:absolute;
         box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
         border-color:rgba(23,23,23,.9);

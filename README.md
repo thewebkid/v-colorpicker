@@ -3,7 +3,7 @@
 ## Over the years, many color pickers have been built...
 ...And this is one of them.
 
-2 days in and looking interesting...
+2 days in and looking interesting... [current build](http://thewebkid.com/cp/)
 
 ![alt text](http://thewebkid.com/colorpicker1.png)
 

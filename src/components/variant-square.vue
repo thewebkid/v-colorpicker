@@ -14,7 +14,7 @@
           left: colorCoordX + 'px',
           visibility:moving?'hidden':'visible'
         }"></div>-->
-    <canvas height="500" width="500" ref="hsw" @click="satMaskClick($event)"></canvas>
+    <canvas height="500" width="500" ref="hsw" @click="canvasClick($event)"></canvas>
   </div>
 </template>
 
@@ -55,9 +55,9 @@ import {Color} from "../color";
       circleMove(args){
         let e = {offsetX:args.css.left,offsetY:args.css.top};
         //console.log(args);
-        this.satMaskClick(e);
+        this.canvasClick(e);
       },
-      satMaskClick(e){
+      canvasClick(e){
         let w = (this.size - e.offsetY) / this.size;
         w = Math.round(w * 100);
         let sat = Math.round((e.offsetX / this.size) * 100);

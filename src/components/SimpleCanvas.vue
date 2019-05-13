@@ -2,13 +2,12 @@
   <div style="position: relative">
     <movable
         class="circle" @move="circleMove" @start="moving=true" @complete="moving=false"
-        :bounds="{x:[-colorCoordX,size-colorCoordX],y:[-colorCoordY,size-colorCoordY]}"
+
         :style="{
-          top: colorCoordY + 'px',
-          left: colorCoordX + 'px',
-          visibility:moving?'hidden':'visible'
-        }"><div v-if="moving" class="circle static"></div></movable>
-    <canvas width="720" height="200" ref="canvas" @click="render"></canvas>
+          top: y + 'px',
+          left: x + 'px'
+        }"><!--<div v-if="moving" class="circle static"></div>--></movable>
+    <canvas width="720" height="200" ref="canvas" @click="canvasClick"></canvas>
   </div>
 </template>
 
@@ -19,36 +18,41 @@
     data:()=>{
       return {
         scale:1.25,
+        h:125,w:450,
+        x:0,y:0,
         moving:false
       }
     },
     computed:{
-      colorCoordX(){
-        return this.hsv.h * this.scale;
-      },
-      colorCoordY(){
-        return 125 - (this.hsv.s * this.scale)
-      }
+
     },
     name: "SimpleCanvas",
     props:['hsv'],
     mounted(){
       this.render();
+      this.x = this.hsv.h * this.scale;
+      this.y = (this.hsv.s * this.scale);
+    },
+    watch:{
+      hsv(hsv){
+        this.x = this.hsv.h * this.scale;
+        this.y = (this.hsv.s * this.scale);
+      }
     },
     methods:{
       circleMove(args){
         let e = {offsetX:args.css.left,offsetY:args.css.top};
-        //console.log(args);
-        //this.satMaskClick(e);
+        this.canvasClick(e);
       },
-      satMaskClick(e){
-       /* let w = (this.size - e.offsetY) / this.size;
-        w = Math.round(w * 100);
-        let sat = Math.round((e.offsetX / this.size) * 100);
-        let hsw = {h: this.hsw.h, s: sat};
-        hsw[this.isHsl ? 'l':'v'] = w;*/
-        //console.log({hsw,x:e.offsetX,y:e.offsetY});
-        //this.$emit('variantchange', new Color(hsw));
+      canvasClick(e){
+        let x = this.x = Math.max(0,Math.min(this.w, e.offsetX));
+        let y = this.y = Math.max(0,Math.min(this.h, e.offsetY));
+        let scale = 1 / this.scale;
+        let s = Math.round(y * scale);
+        let h = Math.round(x * scale);
+        //console.log({x,y,s,h});
+        let hsv = {h, s, v:this.hsv.v};
+        this.$emit('variantchange', new Color(hsv));
       },
       render(){
         const fill = (h,s,v)=>new Color({h,s,v}).hex;
