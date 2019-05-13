@@ -1,92 +1,85 @@
 <template>
   <div v-if="canRender" class="colorpicker-wrap">
-    <div class="top">
-      <div class="hue-gradient" :style="{background:`linear-gradient(90deg, ${hueGradient(10)})`}"></div>
+    <div class="top" v-if="advanced">
+      <div class="hue-gradient" :style="{background:`linear-gradient(90deg, ${hueGradient})`}"></div>
     </div>
 
-    <table>
+    <table :style="{marginBottom: !advanced ? '-9px' : 0}">
       <tbody>
-      <tr>
-        <td class="c input-col">
-          <RF v-for="(l,i) in rgbLabels" :key="i" :lbl="l" :max="255" :h="128" :preview-color="previewColor"
-                                     @channel-change="channelChange"/>
-          <div class="my-3">
-            <!-- Our triggering (target) element -->
-            <a id="popover-strings" style="cursor: pointer;display: block;text-align: center">All formats</a>
-          </div>
+      <tr v-if="advanced">
+        <td class="input-col">
+          <ChannelInput v-for="(l,i) in rgbLabels" :key="i" :lbl="l" :max="255" :h="128" :preview-color="previewColor"
+                        @channel-change="channelChange"/>
+
+          <ChannelInput lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
+                        @channel-change="channelChange"/>
+
         </td>
-        <td class="r input-col" valign="top" v-if="hsw && hsw.wl">
-          <RF lbl="Hue" :max="360" :h="120" :preview-color="hsw" :base-color="previewColor"
-              @channel-change="channelChange"/>
-          <RF lbl="Sat" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
-              @channel-change="channelChange"/>
-          <RF :lbl="hsw.wl" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
-              @channel-change="channelChange"/>
-          <RF lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
-              @channel-change="channelChange"/>
-
-          <b-popover
-              target="popover-strings"
-              triggers="click"
-              placement="auto"
-              container="my-container"
-              ref="popover"
-          >
-
-            <div style="padding:12px 0;margin:0 -9px">
-              <div class="container" title="RGBA Web format">
-                <input type="text" v-model="previewColor.rgbString">
-                <button type="button" @mousedown="message=previewColor.rgbString;" @click="doCopy">Copy</button>
-              </div>
-              <div class="container" title="Hexadecimal Web format">
-                <input type="text" v-model="previewColor.hex">
-                <button type="button" @mousedown="message=previewColor.hex;" @click="doCopy">Copy</button>
-              </div>
-              <div class="container" title="HSL Web format">
-                <input type="text" v-model="previewColor.HSLString">
-                <button type="button" @mousedown="message=previewColor.HSLString;" @click="doCopy">Copy</button>
-              </div>
-              <div class="container" title="HSV format">
-                <input type="text" v-model="previewColor.HSVString">
-                <button type="button" @mousedown="message=previewColor.HSVString;" @click="doCopy">Copy</button>
-              </div>
-              <div class="container" title="Plain rgb array [r,g,b]">
-                <input type="text" v-model="previewColor.rgbArrayString">
-                <button type="button" @mousedown="message=previewColor.rgbArrayString;" @click="doCopy">Copy</button>
-              </div>
-
-
-            </div>
-          </b-popover>
-        </td>
-        <td class="l input-col">
-          <div class="canvas">
-            <movable @move="circleMove"><div class="circle" :style="{top:160 - (hsw.w * 1.6) + 'px',left: (hsw.s * 1.6) + 'px'}"></div></movable>
-            <canvas height="500" width="500" ref="hsw" @click="satMaskClick($event)"></canvas>
+        <td class="input-col" valign="top" v-if="hsw && hsw.wl">
+          <ChannelInput lbl="Hue" :max="359" :h="180" :preview-color="hsw" :base-color="previewColor"
+                        @channel-change="channelChange"/>
+          <ChannelInput lbl="Sat" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
+                        @channel-change="channelChange"/>
+          <ChannelInput :lbl="hsw.wl" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
+                        @channel-change="channelChange"/>
+          <div class="mt-3" style="text-align: right;padding-right:13px;font-size:13px">
+            <b-button-group size="sm" style="font-size: 0.75rem;">
+              <b-button  :variant="mode==='hsl'?'success':''" @click="mode='hsl'">HSL</b-button>
+              <b-button  :variant="mode==='hsv'?'success':''" @click="mode='hsv'">HSV</b-button>
+            </b-button-group>
           </div>
+
+        </td>
+        <td class="variant-square">
+          <variant-square :hsw="hsw" :isHsl="mode==='hsl'" @variantchange="variantChange"/>
+
         </td>
       </tr>
-      <tr>
+      <tr v-else>
+        <td colspan="3">
+          <SimpleCanvas :hsv="previewColor.HSV"/>
+        </td>
+      </tr>
+      <tr v-if="advanced">
         <td colspan="3">
           <hr>
         </td>
       </tr>
       <tr>
-        <td class="input-col">
+        <td style="vertical-align: top;padding-top:8px;">
+          <b-form-checkbox
+            v-model="advanced"
+            name="checkbox-adv">
+            Advanced
+          </b-form-checkbox>
+
+        </td>
+        <td class="input-col" v-if="advanced">
           <div class="input" style="display: inline-block;margin:-2px -40px 0 -12px">
-            <label>Hex</label>
+            <label class="inline">Hex
+              <br><a id="popover-strings" style="cursor: pointer;">
+              <small>All&nbsp;formats</small>
+            </a></label>
             <input type="text" v-model="previewColor.hex" class="hex"/>
+            <br>
+          </div>
+          <all-formats-popover :color="previewColor"/>
+
+        </td>
+        <td v-else style="vertical-align: top;padding-top:8px;">
+          <div class="hsvv">
+            <movable class="bar" :horizontal="[-simpleVBgPos.left,120-simpleVBgPos.left]" :style="{background:simpleVBgPos.bg,left:simpleVBgPos.left+'px'}"/>
           </div>
         </td>
-        <td colspan="2" style="padding-top:1px">
-          <a class="btn-lg btn-dark btn-outline float-right">
+        <td  style="padding-top:1px">
+          <a class="btn-lg btn-dark btn-outline float-right" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
             OK
             <span class="dswatch" :style="{'background-color': previewColor.hex}"></span>
           </a>
-          <b-form-radio-group style="display:inline-block;margin:12px 0 0 8px" @change="paintBouncer">
+          <!--<b-form-radio-group class="hsw-radios">
             <b-form-radio v-model="mode" value="hsl">HSL</b-form-radio>
             <b-form-radio v-model="mode" value="hsv">HSV</b-form-radio>
-          </b-form-radio-group>
+          </b-form-radio-group>-->
         </td>
 
       </tr>
@@ -100,14 +93,16 @@
 <script>
   import Vue from 'vue';
   import BootstrapVue from 'bootstrap-vue'
-
+  import movable from 'v-movable';
+  Vue.use(movable);
   Vue.use(BootstrapVue);
-  import VueClipboard from 'vue-clipboard2'
-  VueClipboard.config.autoSetContainer = true;
-  Vue.use(VueClipboard);
-  import RF from './RF';
+
+  import ChannelInput from './ChannelInput';
   import RangeFlyout from './RangeFlyout';
+  import allFormatsPopover from './AllFormatsPopover';
+  import VariantSquare from './variant-square';
   import {Color} from '../color';
+  import SimpleCanvas from "./SimpleCanvas";
 
   const rgb = 'rgb';
   const isHsl = c => rgb.indexOf(c) === -1;
@@ -120,8 +115,9 @@
         canRender: false,
         ctx:null,
         bouncer:null,
-        message:``,
-        mode:''
+        mode:'',
+        hueGradient:'',
+        advanced:true
       }
     },
     computed:{
@@ -133,21 +129,16 @@
         hsw.wl = hsl ? 'Lum' : 'Val';
         return hsw;
       },
-      hueGradient(){
-        return (gran=3) => {
-
-          let h = 0;
-          let stops = [];
-          while (h < 360) {
-            stops.push(`${new Color({h,s:100,l:50}).hex} ${(h / 3.6).toFixed(1)}%`);
-            h += gran;
-          }
-          //console.log(stops.join(', '))
-          return stops.join(', ')
+      simpleVBgPos(){
+        let v = this.previewColor.HSV.v;
+        let byte = Math.round(v*2.55);
+        return{
+          bg:new Color([byte,byte,byte]).hex,
+          left:v*1.2
         }
       }
     },
-    components: {RangeFlyout, RF},
+    components: {SimpleCanvas, RangeFlyout, ChannelInput, allFormatsPopover,VariantSquare},
     name: 'ColorPicker',
     props: [
       'value'
@@ -156,34 +147,14 @@
       const vm = this;
       this.startColor = new Color(this.value);
       this.previewColor = new Color(this.value);
+      this.hueGradient = Color.hueColorStops();
       this.canRender = true;
+
       Vue.nextTick().then(() => {
-        vm.ctx = vm.$refs.hsw.getContext('2d');
-        vm.paintBouncer();
         vm.mode = 'hsl';
       });
     },
-
     methods: {
-      doCopy: function () {
-        this.$copyText(this.message).then(function (e) {
-          console.log('copied',e);
-        }, function (e) {
-          console.log('error', e);
-        })
-      },
-      circleMove({css}){
-        let e = {offsetX:css.left,offsetY:css.top};
-        this.satMaskClick(e);
-      },
-      satMaskClick(e){
-        let w = (160 - e.offsetY) / 160;//todo:bad ron- magic numbers
-        w = Math.round(w * 100);
-        let sat = Math.round((e.offsetX / 160) * 100);
-        let hsw = {h: this.hsw.h, s: sat};
-        hsw[this.mode ==='hsl' ? 'l':'v'] = w;
-        this.previewColor = new Color(hsw);
-      },
       channelChange({c, v}) {
         const vm = this;
         if (isHsl(c)) {
@@ -197,58 +168,18 @@
         }
         Vue.nextTick().then(() => {
           vm.$emit('preview', vm.previewColor);
-          this.paintBouncer();
+          //this.paintBouncer();
         });
 
       },
-      paintBouncer(){
-        clearTimeout(this.bouncer);
-        this.bouncer = setTimeout(this.paintHsl,80);
-      },
-      paintHsl(){
-        if (this.mode === 'hsv'){
-          return this.paintHsv();
-        }
-        let ctx = this.ctx || this.$refs.hsw.getContext('2d');
-        let hue = Math.round(this.previewColor.HSL.h * 1/*360*/);
-        //console.time(`hsl${hue}`);
-        ctx.clearRect(0,0,500,500);
-        let incr = 2;
-        for (let sat = 0; sat < 100; sat += incr){
-          for (let lum = 0; lum < 100; lum += incr){
-            ctx.fillStyle = `hsl(${hue}, ${sat}%, ${100-lum}%)`;
-            ctx.fillRect(sat * 5, lum * 5, (sat + incr) * 5, (lum + incr) * 5);
-          }
-        }
-
-        //console.timeEnd(`hsl${hue}`);
-        //this.paintHsv();
-      },
-      paintHsv(){
-        //return;
-        let ctx =  this.ctx || this.$refs.hsw.getContext('2d');
-        let h = Math.round(this.previewColor.HSV.h * 1/*360*/);
-        //console.time(`hsv${h}`);
-        ctx.clearRect(0,0,500,500);
-
-        let incr = 2;
-        for (let s = 0; s < 100; s += incr){
-          for (let v = 0; v < 100; v += incr){
-            ctx.fillStyle = new Color({h,s,v:100-v}).hex;
-            ctx.fillRect(s * 5, v * 5, (s + incr) * 5, (v + incr) * 5);
-          }
-        }
-
-        //console.timeEnd(`hsv${h}`);
+      variantChange(updatedColor){
+        this.previewColor = updatedColor;
       }
     }
   }
 </script>
 <style lang="scss">
-  .popover-body{
-    background:linear-gradient(#fff,#eee,#eee,#ddd);
-    box-shadow: 0 3px 3px #555;
-  }
+
   .colorpicker-wrap {
     display:inline-block;
     background:linear-gradient(180deg, #444, #222,#111,#000);
@@ -259,7 +190,7 @@
     .hue-gradient {
       height: 17px;
       width: 450px;
-      margin-bottom: 2px;
+      margin:0 0 2px 3px;
       border:solid 1px #777;
     }
     table{
@@ -269,10 +200,13 @@
       hr{
         border-color:#777;
         margin-left:-7px;
+        position:relative;
+        left:-3px;
       }
       .btn-lg {
         margin:0 15px 12px  0;
         box-shadow:0 0 1px #222;
+        padding:6px 16px;
         .dswatch {
           margin-left:5px;
           display: inline-block;
@@ -284,39 +218,39 @@
           background: white;
         }
       }
+      .hsw-radios{
+        display:inline-block;
+        margin:12px 0 0 16px;
+      }
     }
     td.input-col {
-
       width: 144px;
       margin-right:-4px;
       overflow: visible;
+    }
+    td.variant-square {
+      vertical-align: top;
+      width: 180px;
+      padding: 12px 16px 0 4px;
+    }
+    .hsvv{
+      position:relative;
+      height:20px;
+      width:120px;
+      background:linear-gradient(90deg, white, black);
+      border:solid 1px #888;
+      border-radius:3px;
+      margin:0 0 10px 10px;
+      .bar{
+        height:24px;
+        width:8px;
+        margin:-2px -4px;
+        position:absolute;
+        box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
+        border-color:rgba(23,23,23,.9);
+        &:hover {
+          box-shadow: 0 0 2px #fff, inset 0 0 2px #fefefe;
 
-      &.l {
-        width: 180px;
-        padding: 5px 16px 0 0;
-      }
-
-      .canvas, canvas {
-        height: 160px;
-        width: 160px;
-        display: block;
-        //margin-bottom:-20px;
-        //background-color:dodgerblue;
-      }
-      .canvas{
-        height: 162px;
-        width: 162px;
-        margin:5px -2px 0 0;
-        border: solid 1px #777;
-        position:relative;
-        .circle{
-          height:14px;
-          width:14px;
-          border:solid 2px #eee;
-          border-radius:50%;
-          box-shadow: 0 0 2px #000, inset 0 0 2px #000;
-          position:absolute;
-          margin:-7px;
         }
       }
     }

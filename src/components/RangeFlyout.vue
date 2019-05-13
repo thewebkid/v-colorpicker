@@ -7,8 +7,8 @@
     <transition name="slide-fade">
       <div class="flyout" :class="flyoutClass" v-if="active && !hideFlyout">
         <label>{{max}}</label>
-        <div class="inner" :style="{height: sldHeight+'px',background:slideBackground}">
-          <movable :bounds="{x:[0,0],y:bounds}" :onmove="moved" :oncomplete="complete" :grid="gridSize" :pos-top="startY" />
+        <div class="inner" :style="{height: sldHeight+'px',background:slideBackground}" @mousedown="slideClick($event)">
+          <movable :bounds="{x:[0,0],y:bounds}" :onmove="moved" :oncomplete="complete" :grid="gridSize" :pos-top="startY" :style="{background:handleBg}" />
         </div>
         <label>{{min}}</label>
       </div>
@@ -33,7 +33,8 @@
         active:false,
         curVal:0,
         pctY:0,
-        startY:0
+        startY:0,
+        delayBlur:false
       }
     },
     computed:{
@@ -78,12 +79,27 @@
       'max',
       'sliderHeight',
       'slideBackground',
+      'handleBg',
       'val',
       'incr',
       'hideFlyout'
     ],
     methods:{
+      slideClick(e){
+        this.noBlur = true;
+        if (e.target.classList.contains('inner')){
+          this.moved({pctY:e.offsetY/this.sldHeight})
+        }
+        setTimeout(()=>{
+          this.selectValue();
+          this.noBlur = false;
+        },333);
+
+      },
       blurred(e){
+        if (this.noBlur) {
+          return;
+        }
         this.active = false;
         this.$emit('active', false);
       },
@@ -182,16 +198,17 @@
         border:solid 1px dodgerblue;
       }
       width:6px;
-      box-shadow: inset 0 0 5px #999, 1px 1px 1px #ccc;
+      box-shadow: inset 0 0 5px #999, 1px 1px .5px #ccc;
       //border:outset 1px #aaa;
       //background:#eee;
       display: block;
-      margin-left:42%;
+      margin-left:-4px;
+      left:50%;
       position: relative;
     }
     label{
       display: block;
-      padding:5px 12px;
+      padding:7px 15px 3px 11px;
       text-align: center;
     }
   }

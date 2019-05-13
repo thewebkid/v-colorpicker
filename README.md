@@ -3,4 +3,12 @@
 ## Over the years, many color pickers have been built...
 ...And this is one of them.
 
-Code is messy and buggy right now. Did this on a saturday, so ...
+2 days in and looking interesting...
+
+![alt text](http://thewebkid.com/colorpicker1.png)
+
+![alt text](http://thewebkid.com/colorpicker2.png)
+
+![alt text](http://thewebkid.com/colorpicker3.png)
+
+

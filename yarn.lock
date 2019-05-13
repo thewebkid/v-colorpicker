@@ -8150,10 +8150,10 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-movable@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-0.1.7.tgz#40e2eaf349d9df604812b99d1082c0eafc44de47"
-  integrity sha512-1/DpBLf4Wgr9yABGfWuSdKeDFpXC+fe/tjy++F9H8WA+ojO0yifsiqo1jc6GIRZehZBiHR75HWU1iJYAnjnZEQ==
+v-movable@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-0.1.8.tgz#a1d9633949ed7bf1eda7ad4e889fdb38331ee842"
+  integrity sha512-fVXv88Ku3TcitbIhYmcWUvhZKVpX1THdhwGAEXLzEKNH4E+P0pQDBxY+N6T3fMEGcn4inr0zCLXKf7UV4IIocQ==
   dependencies:
     bili "^4.7.4"
     core-js "^2.6.5"

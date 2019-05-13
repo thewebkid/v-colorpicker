@@ -4,7 +4,7 @@
       <span class="color-pie"></span>
       <span class="swatch" :style="{'background-color': previewColor.hex}"></span>
     </a>
-    <color-picker v-if="show" class="cp" @preview="preview" @picked="preview" :value="previewColor.hex"/>
+    <color-picker v-if="show" class="cp" @preview="preview" @picked="picked" :value="previewColor.hex"/>
   </div>
 </template>
 
@@ -20,6 +20,9 @@ export default {
 },
   name: 'app',
   methods:{
+    picked(c){
+      this.show = false;
+    },
     preview(c){
       this.previewColor = c;
     }

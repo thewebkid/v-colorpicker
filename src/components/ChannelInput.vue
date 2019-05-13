@@ -1,11 +1,14 @@
 <template>
   <div class="input" v-if="v!==null">
-    <label>
-      <span class="line" :style="{background:bg,left:!baseColor?0:'auto',right:!!baseColor?-11+'px':'auto'}" v-if="!activeRF"></span>
-      <strong v-if="activeRF">{{lbl}}</strong>
-      <span v-else>{{lbl}}</span>
+    <label class="inline" :style="{fontWeight:activeRF?900:100}">
+      <span class="line" :style="{background:bg}" v-if="!activeRF"></span>
+      {{lbl}}
     </label>
-    <range-flyout :min="0" :max="max" :sliderHeight="h" :incr="incr" :val="v" :slideBackground="bg" @change="changed" :hide-flyout="hide" @active="isActive"/>
+    <range-flyout
+        :min="0" :max="max":incr="incr" :val="v"
+        :sliderHeight="h"  :slideBackground="bg" :handle-bg="colorBase.hex"
+        @change="changed" @active="isActive"
+    />
   </div>
 </template>
 
@@ -34,9 +37,9 @@
         this.incr=this.incrementVal;
       }
       const vm = this;
-      if (this.lbl==='Hue'){
+      /*if (this.lbl==='Hue'){
         this.hide = true;
-      }
+      }*/
       this.init();
       setTimeout(()=>{
         Vue.nextTick().then(()=>{vm.isInit=false;})
@@ -83,18 +86,19 @@
   div.input {
     position: relative;
     margin-top:15px;
-    label{
+    label.inline{
       position:relative;
       .line{
         position:absolute;
         height:40px;
         width:6px;
-        top:-6px;
-        left:0;
+        top:-7px;
+        right:-11px;
         border-radius:3px;
+        border:solid .7px #eee;
       }
       strong{font-weight:900;}
-      margin:0 8px -2px 2px;
+      margin:0 12px -2px 2px;
       font-weight: 300;
       display:inline-block;
       width:55px;
@@ -107,6 +111,21 @@
         top: 0;
         left: 108px;
         z-index: 10;
+        .inner{
+          box-shadow:none;
+          border:solid .7px #eee;
+          border-radius:3px;
+          div{
+            box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
+            //background:linear-gradient(90deg, rgba(234,234,234,.9),rgba(234,234,234,.5),rgba(234,234,234,.9));
+            //background-color:rgba(234,234,234,.5);
+            border-color:rgba(23,23,23,.9);
+            &:hover {
+              box-shadow: 0 0 2px #fff, inset 0 0 4px #fefefe;
+              //background:linear-gradient(90deg, rgba(234,234,234,.9),rgba(234,234,234,.5),rgba(234,234,234,.9));
+            }
+          }
+        }
       }
     }
     input[type=number] ,input[type=text] {
@@ -118,14 +137,17 @@
       //background-color: #fff;
       background-clip: padding-box;
       border: 1px solid transparent;
-      &:active{
-        outline-color: white;
+      &:active,&:focus{
+        outline: none;
+        box-shadow:0 0 4px white;
       }
       border-radius: 0.25rem;
       display: inline-block;
       width: 60px;
       &.hex{
         width:80px;
+        position:relative;
+        top:-18px;
       }
       height: calc(1.5em + .35rem + 2px);
       padding: .25rem 0 .25rem .375rem;
