@@ -1,11 +1,17 @@
-# v-colorpicker
+# v-cpicker
 Over the years, many color pickers have been built...
-...And this is one of them.
+ 
+ this is one of them. 
+ 
+ NPM did not allow me to name this v-colorpicker 
+ 
+ let's move on...
+  
 ## Installation
-    npm i --save v-colorpicker
+    npm i --save v-cpicker
 
 ### Initialize in main.js
-    import colorpicker from "v-colorpicker";
+    import colorpicker from "v-cpicker";
     Vue.use(colorpicker);
 
 ### Usage example
@@ -21,13 +27,12 @@ Over the years, many color pickers have been built...
 </template>
 
 <script>
-import ColorPicker from './components/ColorPicker.vue'
-import {Color} from './color';
+
 export default {
   data:()=>{
     return {
       show:false,
-      previewColor: new Color('fuchsia')
+      previewColor: 'blue'
     }
 },
   name: 'app',
@@ -46,7 +51,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~bootstrap/scss/bootstrap";
+  
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -101,7 +106,7 @@ export default {
 </style>
 
 ```
-[Demo](http://thewebkid.com/cp/)
+[Live Demo](http://thewebkid.com/cp/)
 
 ### Screenshots
 
