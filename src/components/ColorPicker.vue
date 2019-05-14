@@ -1,7 +1,8 @@
 <template>
   <div v-if="canRender" class="colorpicker-wrap">
     <div class="top" v-if="advanced">
-      <div class="hue-gradient" :style="{background:`linear-gradient(90deg, ${hueGradient})`}"></div>
+      <Hue :hsv="previewColor.HSV" @hueChange="variantChange"/>
+      <!--<div class="hue-gradient" :style="{background:`linear-gradient(90deg, ${hueGradient})`}"></div>-->
     </div>
 
     <table :style="{marginBottom: !advanced ? '-9px' : 0}">
@@ -96,13 +97,14 @@
   Vue.use(movable);
   Vue.use(BootstrapVue);
 
-  import ChannelInput from './ChannelInput';
-  import RangeFlyout from './RangeFlyout';
-  import allFormatsPopover from './AllFormatsPopover';
-  import VariantSquare from './variant-square';
-  import {Color} from '../color';
-  import SimpleCanvas from "./SimpleCanvas";
-  import hsvv from "./HSVV";
+  import Hue from './Hue.vue';
+  import ChannelInput from './ChannelInput.vue';
+  import RangeFlyout from './RangeFlyout.vue';
+  import allFormatsPopover from './AllFormatsPopover.vue';
+  import VariantSquare from './variant-square.vue';
+  import {Color} from '../color.js';
+  import SimpleCanvas from "./SimpleCanvas.vue";
+  import hsvv from "./HSVV.vue";
 
   const rgb = 'rgb';
   const isHsl = c => rgb.indexOf(c) === -1;
@@ -130,7 +132,7 @@
         return hsw;
       }
     },
-    components: {SimpleCanvas, RangeFlyout, ChannelInput, allFormatsPopover,VariantSquare,hsvv},
+    components: {Hue, SimpleCanvas, RangeFlyout, ChannelInput, allFormatsPopover,VariantSquare,hsvv},
     name: 'ColorPicker',
     props: [
       'value'

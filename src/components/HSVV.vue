@@ -1,5 +1,5 @@
 <template>
-  <div class="hsvv">
+  <div class="hsvv" @click="vclick">
     <movable class="bar" :horizontal="[-x, 200 - x]" :style="{background:bg, left:(left===null ? x : left) + 'px'}" @move="moved"/>
   </div>
 </template>
@@ -25,11 +25,13 @@
       this.x = this.hsv.v * 2;
     },
     methods:{
-
+      vclick({offsetX}){
+        let css = {left:offsetX};
+        this.moved({css});
+      },
       moved({css}){
         let hsv = Object.assign(this.hsv, {v: Math.round(css.left/2)});
         this.left = Math.max(0,Math.min(200,css.left));
-        //console.log(hsv);
         this.$emit('hsvvChange', new Color(hsv));
       }
     },
@@ -56,7 +58,6 @@
       border-color:rgba(23,23,23,.9);
       &:hover {
         box-shadow: 0 0 2px #fff, inset 0 0 2px #fefefe;
-
       }
     }
   }

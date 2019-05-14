@@ -1,20 +1,30 @@
 {
   "name": "v-colorpicker",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "author": "Ron Gilchrist (thewebkid)",
+  "keywords": ["vue","vue-component","javascript","colorpicker"],
+  "license": "MIT",
   "scripts": {
+    "build": "bili --name index --plugin vue --vue.css false",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build2": "vue-cli-service build"
   },
+  "main": "./dist/index.js",
+  "files": [
+    "dist/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thewebkid/v-colorpicker.git"
+  },
+
   "dependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^2.6.5",
-    "eslint-plugin-react": "^7.13.0",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
     "v-movable": "^0.1.8",

@@ -14,7 +14,7 @@
 
 <script>
   import Vue from 'vue';
-  import RangeFlyout from './RangeFlyout';
+  import RangeFlyout from './RangeFlyout.vue';
   export default {
     data:()=>{
       return {
