@@ -1,11 +1,5 @@
 # v-cpicker
-Over the years, many color pickers have been built...
- 
- this is one of them. 
- 
- NPM did not allow me to name this v-colorpicker 
- 
- let's move on...
+Currently in alpha (npm would not allow me to save as v-colorpicker)
   
 ## Installation
     npm i --save v-cpicker
@@ -13,6 +7,15 @@ Over the years, many color pickers have been built...
 ### Initialize in main.js
     import colorpicker from "v-cpicker";
     Vue.use(colorpicker);
+
+### Options (set as :options="optionsObject")
+- **allowModeChange**: (_default=true_) Allow simple/advanced mode change (checkbox on UI) 
+- **advanced**:(_default=false_) Start in advanced mode
+- **previewBars**: (_default=true_) Preview gradient bars next to channel values
+- **alpha**: (_default=true_)  Enable alpha channel
+- **alphaHidden**: (_default=true_) Hide link to enable alpha on ui
+- **formatsPopup**: (_default=true_) Show link to all formats
+- **hslToggle**: (_default=true_) Show HSL/HSV toggle
 
 ### Usage example
 ```html
@@ -22,36 +25,39 @@ Over the years, many color pickers have been built...
       <span class="color-pie"></span>
       <span class="swatch" :style="{'background-color': previewColor.hex}"></span>
     </a>
-    <color-picker v-if="show" class="cp" @preview="preview" @picked="picked" :value="previewColor.hex"/>
+    <color-picker v-if="show" :options="options" class="cp" @preview="preview" @picked="picked" :value="previewColor.hex"/>
   </div>
 </template>
 
 <script>
-
 export default {
   data:()=>{
     return {
+      options:{
+        allowModeChange:true,
+        advanced:true,
+        alpha:true,
+        alphaHidden:true,
+        formatsPopup:true,
+        previewBars:true,
+        hslToggle:true
+      },
       show:false,
-      previewColor: 'blue'
+      previewColor: 'fuchsia'
     }
-},
+  },
   name: 'app',
   methods:{
-    picked(c){
+    picked(){
       this.show = false;
     },
     preview(c){
       this.previewColor = c;
     }
-  },
-  components: {
-    ColorPicker
   }
 }
 </script>
-
-<style lang="scss">
-  
+<style lang="scss">  
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

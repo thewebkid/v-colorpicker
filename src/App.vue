@@ -1,26 +1,60 @@
 <template>
   <div id="app">
+    <h2>Static picker</h2>
+    <colorpicker :options="options"/>
+    <b-form-checkbox v-model="options.allowModeChange">
+      Allow Mode Change
+    </b-form-checkbox>
+    <b-form-checkbox v-model="options.advanced">
+      Start in advanced mode
+    </b-form-checkbox>
+    <b-form-checkbox v-model="options.previewBars" v-if="options.advanced || options.allowModeChange">
+      Preview Gradient Bars next to channel values
+    </b-form-checkbox>
+    <b-form-checkbox v-model="options.alpha" v-if="options.advanced || options.allowModeChange">
+      Enable alpha channel
+    </b-form-checkbox>
+    <b-form-checkbox v-model="options.alphaHidden" v-if="options.advanced || options.allowModeChange">
+      Hide link to enable alpha on ui
+    </b-form-checkbox>
+    <b-form-checkbox v-model="options.formatsPopup" v-if="options.advanced || options.allowModeChange">
+      Show link to all formats
+    </b-form-checkbox>
+    <b-form-checkbox v-model="options.hslToggle" v-if="options.advanced || options.allowModeChange">
+      Show HSL/HSV toggle
+    </b-form-checkbox>
+    <h2>Flyout</h2>
     <a class="btn btn-light btn-lg" @click="show=!show">
       <span class="color-pie"></span>
-      <span class="swatch" :style="{'background-color': previewColor.hex}"></span>
+      <span class="swatch" :style="{'background-color': previewColor}"></span>
     </a>
-    <color-picker v-if="show" class="cp" @preview="preview" @picked="picked" :value="previewColor.hex"/>
+    <colorpicker v-if="show" class="cp" @preview="preview" @picked="picked" value="fuscia"/>
   </div>
+
 </template>
 
 <script>
-import ColorPicker from './components/ColorPicker.vue'
-import {Color} from './color';
+import colorpicker from './components/ColorPicker.vue';
+
 export default {
   data:()=>{
     return {
+      options:{
+        allowModeChange:true,
+        advanced:true,
+        alpha:true,
+        alphaHidden:true,
+        formatsPopup:true,
+        previewBars:true,
+        hslToggle:true
+      },
       show:false,
-      previewColor: new Color('fuchsia')
+      previewColor: 'fuchsia'
     }
-},
+  },
   name: 'app',
   methods:{
-    picked(c){
+    picked(){
       this.show = false;
     },
     preview(c){
@@ -28,7 +62,7 @@ export default {
     }
   },
   components: {
-    ColorPicker
+    colorpicker
   }
 }
 </script>
@@ -40,9 +74,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 20px;
+  .control{
+    display: inline-block;
+    padding:12px;
+  }
 .cp{
   position:absolute;
-  top:55px;
+  top:587px;
   left:101px;
 }
   .color-pie{

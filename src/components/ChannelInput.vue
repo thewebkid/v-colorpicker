@@ -1,11 +1,11 @@
 <template>
   <div class="input" v-if="v!==null">
     <label class="inline" :style="{fontWeight:activeRF?900:100}">
-      <span class="line" :style="{background:bg}" v-if="!activeRF"></span>
+      <span class="line" :style="{background:bg}" v-if="previewBars"></span>
       {{lbl}}
     </label>
     <range-flyout
-        :min="0" :max="max":incr="incr" :val="v"
+        :min="0" :max="max" :incr="incr" :val="v"
         :sliderHeight="h"  :slideBackground="bg" :handle-bg="colorBase.hex"
         @change="changed" @active="isActive"
     />
@@ -14,7 +14,7 @@
 
 <script>
   import Vue from 'vue';
-  import RangeFlyout from './RangeFlyout.vue';
+
   export default {
     data:()=>{
       return {
@@ -29,24 +29,26 @@
         activeRF:false
       }
     },
-    components:{ RangeFlyout },
-    name: 'RF',
+    computed:{
+      previewBars(){
+        return this.activeRF || !this.$parent.options || this.$parent.options.previewBars !== false;
+      }
+    },
+
+    name: 'ChannelInput',
     props:['lbl','max','h','previewColor','baseColor','incrementVal'],
     mounted(){
       if (this.incrementVal){
         this.incr=this.incrementVal;
       }
       const vm = this;
-      /*if (this.lbl==='Hue'){
-        this.hide = true;
-      }*/
       this.init();
       setTimeout(()=>{
-        Vue.nextTick().then(()=>{vm.isInit=false;})
+        Vue.nextTick().then(()=>vm.isInit=false);
       },123)
     },
     watch:{
-      previewColor(c){
+      previewColor(){
         //console.log(this.chan,'pv');
         this.init();
       },
@@ -58,6 +60,7 @@
     methods:{
       isActive(act){this.activeRF = act;},
       init(){
+        //console.log(this.$parent.options);
         this.chan = this.lbl.charAt(0).toLowerCase();
         this.colorBase = this.baseColor||this.previewColor;
         this.v = this.previewColor[this.chan];

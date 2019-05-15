@@ -36,7 +36,6 @@
       setHue(x){
         let hVal = Math.max(0,Math.min(Math.round(x * this.moveScale),360));
         let hsv = Object.assign(this.hsv, {h: hVal});
-        //this.left = Math.max(0,Math.min(this.w, css.left));
         this.$emit('hueChange', new Color(hsv));
       },
       hueClick({offsetX}){

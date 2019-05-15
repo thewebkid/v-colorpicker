@@ -42,9 +42,8 @@ import {Color} from "../color";
     name: "variant-square",
     props:['hsw','isHsl'],//hsw is Hue, Sat, Whatever (v, l, b, etc.). It is dynamic handed from parent
     watch:{
-      hsw(hsw){
+      hsw(){
         this.paintBouncer();
-        //console.log({top:this.size - (hsw.w * this.scale),left: (hsw.s * this.scale)});
       }
     },
     mounted(){
@@ -71,6 +70,9 @@ import {Color} from "../color";
         this.bouncer = setTimeout(this.paintHsw, 40);
       },
       paintHsw(){
+        if (!this.$refs.hsw){
+          return;
+        }
         const fillHsl = (h,s,l)=>`hsl(${h}, ${s}%, ${100 - l}%)`;
         const fillHsv = (h,s,v)=>new Color({h,s,v:100-v}).hex;
         const fill = this.isHsl ? fillHsl : fillHsv;

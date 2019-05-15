@@ -213,7 +213,7 @@ export class Color {
       }
       return this;
     }
-    return Color.fromArray(0, 0, 0);
+    return Color.fromArray([0, 0, 0]);
   }
   static fromNamed(colorName){
     return Color.fromHex(namedColors[colorName.toLowerCase()])
