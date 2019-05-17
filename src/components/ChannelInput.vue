@@ -131,7 +131,7 @@
       div.flyout {
         background:linear-gradient(180deg, #444, #111,#000);
         top: 0;
-        left: 108px;
+        left: 62px;
         z-index: 10;
         .inner{
           box-shadow:none;

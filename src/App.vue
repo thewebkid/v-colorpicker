@@ -32,7 +32,8 @@
       <span class="color-pie"></span>
       <span class="swatch" :style="{'background-color': previewColor}"></span>
     </a>
-    <colorpicker v-if="show" class="cp" @preview="preview" @picked="picked" value="fuscia"/>
+    <colorpicker v-if="show" class="cp" @preview="preview" @picked="picked" value="fuchsia"/>
+
   </div>
 
 </template>
@@ -63,7 +64,7 @@ export default {
       this.show = false;
     },
     preview(c){
-      this.previewColor = c;
+      this.previewColor = c.hex;
     }
   },
   components: {
@@ -81,7 +82,7 @@ export default {
   margin: 20px;
   .control{
     display: inline-block;
-    padding:12px;
+    margin:112px;
   }
 .cp{
   position:absolute;

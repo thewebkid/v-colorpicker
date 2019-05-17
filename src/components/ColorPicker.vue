@@ -32,12 +32,12 @@
 
         </td>
         <td class="variant-square">
-          <variant-square :hsw="hsw" :isHsl="mode==='hsl'" :light="opt('light')" @variantchange="updateColor"/>
+          <variant-square v-if="canRender" :hsw="hsw" :isHsl="mode==='hsl'" :light="opt('light')" @variantchange="updateColor"/>
         </td>
       </tr>
       <tr v-else>
         <td colspan="3">
-          <SimpleCanvas :hsv="previewColor.HSV" @variantchange="updateColor"/>
+          <SimpleCanvas v-if="canRender" :hsv="previewColor.HSV" @variantchange="updateColor"/>
         </td>
       </tr>
       <tr v-if="advanced">
@@ -159,8 +159,7 @@
       const vm = this;
       this.advanced = this.options && this.options.advanced === true;
       this.startColor = new Color(this.value);
-      this.updateColor(new Color(this.value));
-
+      this.updateColor(this.value,true);
       this.hueGradient = Color.hueColorStops();
       this.canRender = true;
 
@@ -170,7 +169,7 @@
     },
     watch:{
       options(opts){
-        console.log(opts);
+        //console.log(opts);
       },
       startAdvanced(a){
         this.advanced = a;
@@ -198,10 +197,6 @@
           rgb[c] = v;
           vm.updateColor(new Color(rgb));
         }
-        Vue.nextTick().then(() => {
-          vm.$emit('preview', vm.previewColor);
-          //this.paintBouncer();
-        });
       },
       updateColor(updatedColor,construct){
         if (construct===true){
@@ -209,6 +204,9 @@
         }
         this.previewColor = updatedColor;
         this.hexVal = this.previewColor.hex;
+        Vue.nextTick().then(() => {
+          this.$emit('preview', this.previewColor);
+        });
       }
     }
   }

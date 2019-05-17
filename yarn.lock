@@ -8112,10 +8112,10 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-movable@1.0.0-beta.0, v-movable@^1.0.0-beta.0:
-  version "1.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-1.0.0-beta.0.tgz#e4723658fde5df6e35d671de1bcd939f5b897787"
-  integrity sha512-aLJ4T7MK22OOFwjCczcD4i4nEV3Leb1SE7zEl/tAHAt0aYGIyh2KmX+ouwRx40s9Oqqsk9gLXCFn35ZOxsXmZA==
+v-movable@0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-0.1.8.tgz#a1d9633949ed7bf1eda7ad4e889fdb38331ee842"
+  integrity sha512-fVXv88Ku3TcitbIhYmcWUvhZKVpX1THdhwGAEXLzEKNH4E+P0pQDBxY+N6T3fMEGcn4inr0zCLXKf7UV4IIocQ==
   dependencies:
     bili "^4.7.4"
     core-js "^2.6.5"
@@ -8124,18 +8124,25 @@ v-movable@1.0.0-beta.0, v-movable@^1.0.0-beta.0:
     vue "^2.6.10"
     vue-template-compiler "^2.5.21"
 
-v-range-flyout@1.0.0-beta.0:
-  version "1.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/v-range-flyout/-/v-range-flyout-1.0.0-beta.0.tgz#5f989faf978448889dbecd8c148a399e560ad499"
-  integrity sha512-2PGZ0Il7eITWsT3kuUglkEESyZCkUhTnBzSqvYyo9tENKHgpv0kGIbGhrY8sEVdaq/IbwOXvAXa+q/VTILCUrg==
+v-movable@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-0.2.1.tgz#f011236ee002048bf3c428b80172ff7668950273"
+  integrity sha512-DDrpuWWIeqPMG0EEelzlRn5H2w2ZlJkr+9eXuxJLXtNJQguAa5VeTKaQR/Lne3F4rafWOSZRhDSoCDp2OqYceg==
   dependencies:
     bili "^4.7.4"
     core-js "^2.6.5"
-    sass "^1.18.0"
-    sass-loader "^7.1.0"
-    v-movable "^1.0.0-beta.0"
+    postcss "^7.0.16"
+    rollup-plugin-vue "^5.0.0"
     vue "^2.6.10"
     vue-template-compiler "^2.5.21"
+
+v-range-flyout@0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/v-range-flyout/-/v-range-flyout-0.2.5.tgz#a916819653b381a148987e26661b65d364a2f9b1"
+  integrity sha512-lB9WpW4C5L2fyUqcANnwuh9KMwkIfGCIHwRueMJ+7z92UZgh6BzjL+EISGdZHBw19AvGm87yWrVKhpvmhyZz3Q==
+  dependencies:
+    v-movable "0.2.1"
+    vue "^2.6.10"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"

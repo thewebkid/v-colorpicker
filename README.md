@@ -1,8 +1,9 @@
-# v-cpicker 
-Of all the colorpickers in the world, this is definitely one of them. Made for vue.
-![alt text](http://thewebkid.com/colorpicker.png)
+# v-cpicker (a vue colorpicker) [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Currently in beta (npm would not allow me to save as v-colorpicker)
+![alt text](http://thewebkid.com/colorpicker.png)
+[Live Demo](http://thewebkid.com/cp/)
+
+Currently in active development - please file a github issue if you have a bug or request. 
   
 ## Installation
     npm i --save v-cpicker
@@ -116,5 +117,5 @@ export default {
 </style>
 
 ```
-[Live Demo](http://thewebkid.com/cp/)
+
 

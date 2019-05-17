@@ -180,6 +180,9 @@ const hueColorStops = 'rgb(255, 0, 0) 0%, rgb(255, 42, 0) 2.8%, rgb(255, 85, 0) 
 
 export class Color {
   constructor(input,g,b,a) {
+    if (input==='fuschia'){
+      console.log(input);
+    }
     if (g !== undefined && b!== undefined){
       this.r = colorByte(input);
       this.g = colorByte(g);

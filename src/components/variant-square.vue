@@ -7,8 +7,8 @@
         :style="{
           top: colorCoordY + 'px',
           left: colorCoordX + 'px',
-          visibility:moving?'hidden':'visible'
-        }"><div v-if="moving" class="circle static"></div></movable>
+          visibility:moving ? 'visible' : 'visible'
+        }"><div v-if="0" class="circle static"></div></movable>
       <!--<div v-if="moving" class="circle" :style="{
           top: colorCoordY + 'px',
           left: colorCoordX + 'px',
@@ -40,7 +40,7 @@ import {Color} from "../color";
       }
     },
     name: "variant-square",
-    props:['hsw','isHsl'],//hsw is Hue, Sat, Whatever (v, l, b, etc.). It is dynamic handed from parent
+    props:['hsw','isHsl','light'],//hsw is Hue, Sat, Whatever (v, l, b, etc.). It is dynamic handed from parent
     watch:{
       hsw(){
         this.paintBouncer();
@@ -53,7 +53,6 @@ import {Color} from "../color";
 
       circleMove(args){
         let e = {offsetX:args.css.left,offsetY:args.css.top};
-        //console.log(args);
         this.canvasClick(e);
       },
       canvasClick(e){
