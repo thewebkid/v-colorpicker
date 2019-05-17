@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "0.1.4",
+  "version": "1.0.0-beta.0",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": ["vue","vue-component","javascript","colorpicker"],
@@ -25,10 +25,10 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^2.6.5",
-    "v-range-flyout": "^0.1.0",
+    "v-range-flyout": "1.0.0-beta.0",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
-    "v-movable": "^0.1.8",
+    "v-movable": "1.0.0-beta.0",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.3.0",
     "vue-template-compiler": "^2.5.21"

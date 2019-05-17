@@ -8112,10 +8112,10 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-movable@^0.1.1, v-movable@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-0.1.8.tgz#a1d9633949ed7bf1eda7ad4e889fdb38331ee842"
-  integrity sha512-fVXv88Ku3TcitbIhYmcWUvhZKVpX1THdhwGAEXLzEKNH4E+P0pQDBxY+N6T3fMEGcn4inr0zCLXKf7UV4IIocQ==
+v-movable@1.0.0-beta.0, v-movable@^1.0.0-beta.0:
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/v-movable/-/v-movable-1.0.0-beta.0.tgz#e4723658fde5df6e35d671de1bcd939f5b897787"
+  integrity sha512-aLJ4T7MK22OOFwjCczcD4i4nEV3Leb1SE7zEl/tAHAt0aYGIyh2KmX+ouwRx40s9Oqqsk9gLXCFn35ZOxsXmZA==
   dependencies:
     bili "^4.7.4"
     core-js "^2.6.5"
@@ -8124,16 +8124,16 @@ v-movable@^0.1.1, v-movable@^0.1.8:
     vue "^2.6.10"
     vue-template-compiler "^2.5.21"
 
-v-range-flyout@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/v-range-flyout/-/v-range-flyout-0.1.0.tgz#e77998e740c925e88fd3a2a61a4a25bb4b6af7f7"
-  integrity sha512-eohADb6PGIuQv7nZYyza4fPOVOhFjnefUAzwsloMJtIyrwcsI+ujNXma6W6zd5Lxa8QGl2WZsguFf0tM2wrxAA==
+v-range-flyout@1.0.0-beta.0:
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/v-range-flyout/-/v-range-flyout-1.0.0-beta.0.tgz#5f989faf978448889dbecd8c148a399e560ad499"
+  integrity sha512-2PGZ0Il7eITWsT3kuUglkEESyZCkUhTnBzSqvYyo9tENKHgpv0kGIbGhrY8sEVdaq/IbwOXvAXa+q/VTILCUrg==
   dependencies:
     bili "^4.7.4"
     core-js "^2.6.5"
     sass "^1.18.0"
     sass-loader "^7.1.0"
-    v-movable "^0.1.1"
+    v-movable "^1.0.0-beta.0"
     vue "^2.6.10"
     vue-template-compiler "^2.5.21"
 

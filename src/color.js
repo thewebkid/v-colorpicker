@@ -179,7 +179,12 @@ export const namedColors = {
 const hueColorStops = 'rgb(255, 0, 0) 0%, rgb(255, 42, 0) 2.8%, rgb(255, 85, 0) 5.6%, rgb(255, 128, 0) 8.3%, rgb(255, 170, 0) 11.1%, rgb(255, 213, 0) 13.9%, rgb(255, 255, 0) 16.7%, rgb(212, 255, 0) 19.4%, rgb(170, 255, 0) 22.2%, rgb(128, 255, 0) 25%, rgb(85, 255, 0) 27.8%, rgb(43, 255, 0) 30.6%, rgb(0, 255, 0) 33.3%, rgb(0, 255, 42) 36.1%, rgb(0, 255, 85) 38.9%, rgb(0, 255, 128) 41.7%, rgb(0, 255, 170) 44.4%, rgb(0, 255, 213) 47.2%, rgb(0, 255, 255) 50%, rgb(0, 213, 255) 52.8%, rgb(0, 170, 255) 55.6%, rgb(0, 128, 255) 58.3%, rgb(0, 85, 255) 61.1%, rgb(0, 42, 255) 63.9%, rgb(0, 0, 255) 66.7%, rgb(43, 0, 255) 69.4%, rgb(85, 0, 255) 72.2%, rgb(128, 0, 255) 75%, rgb(170, 0, 255) 77.8%, rgb(212, 0, 255) 80.6%, rgb(255, 0, 255) 83.3%, rgb(255, 0, 212) 86.1%, rgb(255, 0, 170) 88.9%, rgb(255, 0, 128) 91.7%, rgb(255, 0, 85) 94.4%, rgb(255, 0, 43) 97.2%, rgb(255, 0, 0) 99.9%';
 
 export class Color {
-  constructor(input) {
+  constructor(input,g,b,a) {
+    if (g !== undefined && b!== undefined){
+      this.r = colorByte(input);
+      this.g = colorByte(g);
+      this.b = colorByte(b);
+    }
     if (Array.isArray(input)) {
       return Color.fromArray(input);
     } else if (typeof input === 'string') {
@@ -231,6 +236,9 @@ export class Color {
   }
 
   static fromHex(hex) {
+    if (hex.length < 5){
+      hex = hex.split('').map(h=>h+h).join('');
+    }
     return Color.fromArray(hex.match(/[A-Za-z0-9]{2}/g).map(v => parseInt(v, 16)));
   }
 
@@ -294,6 +302,9 @@ export class Color {
   }
   get rgb() {
     return [this.r, this.g, this.b];
+  }
+  get rgba() {
+    return [this.r, this.g, this.b, this.a===undefined? 1 : this.a];
   }
   get rgbArrayString() {
     return JSON.stringify([this.r, this.g, this.b]);

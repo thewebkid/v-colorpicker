@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <h2>Static picker</h2>
-    <colorpicker :options="options"/>
+    <h2>Static colorpicker</h2>
+    <colorpicker :options="options" value="blue"/>
+    <b-form-checkbox v-model="options.light">
+      Use light theme
+    </b-form-checkbox>
     <b-form-checkbox v-model="options.allowModeChange">
       Allow Mode Change
     </b-form-checkbox>
@@ -23,7 +26,8 @@
     <b-form-checkbox v-model="options.hslToggle" v-if="options.advanced || options.allowModeChange">
       Show HSL/HSV toggle
     </b-form-checkbox>
-    <h2>Flyout</h2>
+    <br>
+    <h2>Colorpicker as flyout</h2>
     <a class="btn btn-light btn-lg" @click="show=!show">
       <span class="color-pie"></span>
       <span class="swatch" :style="{'background-color': previewColor}"></span>
@@ -40,10 +44,11 @@ export default {
   data:()=>{
     return {
       options:{
+        light:true,
         allowModeChange:true,
         advanced:true,
         alpha:true,
-        alphaHidden:true,
+        alphaHidden:false,
         formatsPopup:true,
         previewBars:true,
         hslToggle:true

@@ -1,5 +1,5 @@
 <template>
-  <div class="canvas">
+  <div class="canvas" :class="{light}">
 
     <movable
         class="circle" @move="circleMove" @start="moving=true" @complete="moving=false"
@@ -104,9 +104,12 @@ import {Color} from "../color";
     .canvas{
       height: 162px;
       width: 162px;
-      margin:5px -2px 0 0;
+      margin:5px -2px 0 -1px;
       border: solid 1px #777;
       position:relative;
+      &.light{
+        border-color:#bbb;
+      }
 
     }
 

@@ -12,3 +12,15 @@
  //position:static;
  }
 }
+.light{
+
+  input[type=number], input[type=text].hex {
+    background: linear-gradient(180deg, #fff, #fff);
+    color: #111;
+    &:active,&:focus{
+      outline: none;
+      box-shadow:0 0 4px #aaa;
+    }
+  }
+
+}

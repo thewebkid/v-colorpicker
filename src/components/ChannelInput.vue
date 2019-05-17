@@ -1,7 +1,9 @@
 <template>
-  <div class="input" v-if="v!==null">
+  <div class="input" v-if="v!==null" :class="{light}">
     <label class="inline" :style="{fontWeight:activeRF?900:100}">
-      <span class="line" :style="{background:bg}" v-if="previewBars"></span>
+      <span class="line" :style="{background:bg}" v-if="previewBars">
+        <span class="pct" :style="{top:(pct*100)+'%'}"></span>
+      </span>
       {{lbl}}
     </label>
     <range-flyout
@@ -26,12 +28,16 @@
         hide:false,
         isInit:true,
         incr:1,
-        activeRF:false
+        activeRF:false,
+        pct:0
       }
     },
     computed:{
       previewBars(){
-        return this.activeRF || !this.$parent.options || this.$parent.options.previewBars !== false;
+        return !this.activeRF && (!this.$parent.options || this.$parent.options.previewBars !== false);
+      },
+      light(){
+        return this.$parent.opt('light')
       }
     },
 
@@ -58,7 +64,9 @@
       }
     },
     methods:{
-      isActive(act){this.activeRF = act;},
+      isActive(act){
+        this.activeRF = act;
+      },
       init(){
         //console.log(this.$parent.options);
         this.chan = this.lbl.charAt(0).toLowerCase();
@@ -73,6 +81,7 @@
         this.bg = this.colorBase.channelGradient(this.chan);
       },
       changed(v){
+        this.pct = 1 - (v / this.max);
         if (this.chan==='' || this.isInit){
           return;
         }
@@ -87,6 +96,7 @@
 
 <style lang="scss">
   div.input {
+
     position: relative;
     margin-top:15px;
     label.inline{
@@ -99,6 +109,15 @@
         right:-11px;
         border-radius:3px;
         border:solid .7px #eee;
+        .pct{
+          left:-4px;
+          margin-top:-.75px;
+          position:absolute;
+          width:10px;
+          height:1.5px;
+          background:white;
+          display: inline-block;
+        }
       }
       strong{font-weight:900;}
       margin:0 12px -2px 2px;
@@ -131,13 +150,14 @@
         }
       }
     }
+
     input[type=number] ,input[type=text] {
       background:linear-gradient(180deg, #f8f8f8, #ddd);
       font-size: 1rem;
       font-weight: 400;
       line-height: 1.5;
       color: #495057;
-      //background-color: #fff;
+
       background-clip: padding-box;
       border: 1px solid transparent;
       &:active,&:focus{
@@ -154,6 +174,34 @@
       }
       height: calc(1.5em + .35rem + 2px);
       padding: .25rem 0 .25rem .375rem;
+    }
+    &.light{
+      div.range-flyout-wrapper{
+        div.flyout {
+          background: linear-gradient(180deg, #eee, #ddd, #ccc);
+          .inner div{border-color:rgba(234,234,234,.9);}
+        }
+      }
+      label.inline {
+        border:none;
+        outline:none;
+        .line{
+          border:solid .7px #999;
+          right:-10px;
+          .pct{
+            background:#111;
+          }
+        }
+      }
+      input[type=number], input[type=text].hex {
+        background: linear-gradient(180deg, #fff, #fff);
+        color: #111;
+        &:active,&:focus{
+          outline: none;
+          box-shadow:0 0 4px #aaa;
+        }
+      }
+
     }
   }
 

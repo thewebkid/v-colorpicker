@@ -1,5 +1,5 @@
 <template>
-  <div  class="colorpicker-wrap">
+  <div  class="colorpicker-wrap" :class="{light:opt('light')}">
     <div class="top" v-if="advanced">
       <Hue :hsv="previewColor.HSV" @hueChange="updateColor"/>
     </div>
@@ -32,7 +32,7 @@
 
         </td>
         <td class="variant-square">
-          <variant-square :hsw="hsw" :isHsl="mode==='hsl'" @variantchange="updateColor"/>
+          <variant-square :hsw="hsw" :isHsl="mode==='hsl'" :light="opt('light')" @variantchange="updateColor"/>
         </td>
       </tr>
       <tr v-else>
@@ -70,7 +70,7 @@
           <hsvv :hsv="previewColor.HSV" @hsvvChange="updateColor"/>
         </td>
         <td  style="padding-top:1px">
-          <a class="btn-lg btn-dark btn-outline float-right" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
+          <a class="btn-lg btn-outline float-right" :class="{'btn-dark':!opt('light')}" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
             OK
             <span class="dswatch" :style="{'background-color': previewColor.rgbaString}"></span>
           </a>
@@ -114,6 +114,7 @@
         hueGradient:'',
         advanced:true,
         defaultOptions:{
+          light:false,
           allowModeChange:true,
           advanced:false,
           alpha:undefined,
@@ -213,37 +214,57 @@
   }
 </script>
 <style lang="scss" scoped>
+  @import "~bootstrap/scss/bootstrap";
+  @import "../scss/shared";
   .colorpicker-wrap {
     display:inline-block;
-    background:black linear-gradient(180deg, #444, #222, #111, #000);
+    background: linear-gradient(180deg, #444, #222, #111, #000);
     color:#eee;
+
+    &.light{
+      .btn-lg{background:linear-gradient(180deg,  #e7e7e7, #d3d3d3);}
+      background: linear-gradient(180deg, #f7f7f7, #e7e7e7, #e3e3e3);
+      color:#111;
+      a{
+        color:$link-color;
+        &:hover{
+          color:$link-hover-color;
+        }
+      }
+      hr {
+        border-color: #ccc;
+      }
+    }
     box-shadow:0 0 3px #777777;
     border-radius:8px;
     padding:17px 10px 5px 10px;
+    .btn-lg {
+      cursor:pointer;
+      margin:0 15px 12px  0;
+      box-shadow:0 0 1px #222;
+      padding:6px 16px;
+      .dswatch {
+         margin-left:5px;
+         display: inline-block;
+         height: 15px;
+         width: 15px;
+         border-radius: 2px;
+         box-shadow: 0 0 1px #fff, inset 0 0 1px #eee;
+         background: white;
+      }
+    }
+    hr{
+     border-color:#555;
+     margin-left:-7px;
+     position:relative;
+     left:-3px;
+   }
     table{
       max-width:473px;
       margin-right:-12px;
       table-layout: fixed;
-      hr{
-        border-color:#555;
-        margin-left:-7px;
-        position:relative;
-        left:-3px;
-      }
-      .btn-lg {
-        margin:0 15px 12px  0;
-        box-shadow:0 0 1px #222;
-        padding:6px 16px;
-        .dswatch {
-          margin-left:5px;
-          display: inline-block;
-          height: 15px;
-          width: 15px;
-          border-radius: 2px;
-          box-shadow: 0 0 1px #fff, inset 0 0 1px #eee;
-          background: white;
-        }
-      }
+
+
     }
     td.input-col {
       vertical-align: top;
