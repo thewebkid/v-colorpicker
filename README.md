@@ -1,5 +1,8 @@
-# v-cpicker
-Currently in alpha (npm would not allow me to save as v-colorpicker)
+# v-cpicker 
+Of all the colorpickers in the world, this is definitely one of them. Made for vue.
+![alt text](http://thewebkid.com/colorpicker.png)
+
+Currently in beta (npm would not allow me to save as v-colorpicker)
   
 ## Installation
     npm i --save v-cpicker
@@ -9,6 +12,7 @@ Currently in alpha (npm would not allow me to save as v-colorpicker)
     Vue.use(colorpicker);
 
 ### Options (set as :options="optionsObject")
+- **light**: (_default=true_) Use light theme
 - **allowModeChange**: (_default=true_) Allow simple/advanced mode change (checkbox on UI) 
 - **advanced**:(_default=false_) Start in advanced mode
 - **previewBars**: (_default=true_) Preview gradient bars next to channel values
@@ -113,13 +117,4 @@ export default {
 
 ```
 [Live Demo](http://thewebkid.com/cp/)
-
-### Screenshots
-
-![alt text](http://thewebkid.com/colorpicker1.png)
-
-![alt text](http://thewebkid.com/colorpicker2.png)
-
-![alt text](http://thewebkid.com/colorpicker3.png)
-
 

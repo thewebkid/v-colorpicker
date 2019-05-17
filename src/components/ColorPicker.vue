@@ -214,7 +214,6 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import "~bootstrap/scss/bootstrap";
   @import "../scss/shared";
   .colorpicker-wrap {
     display:inline-block;
@@ -226,9 +225,9 @@
       background: linear-gradient(180deg, #f7f7f7, #e7e7e7, #e3e3e3);
       color:#111;
       a{
-        color:$link-color;
+        color:#007bff;
         &:hover{
-          color:$link-hover-color;
+          color:darken(#007bff, 15%);
         }
       }
       hr {

@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": ["vue","vue-component","javascript","colorpicker"],
