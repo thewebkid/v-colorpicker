@@ -57,13 +57,13 @@
     border:solid 1px #777;
     position: relative;
     .bar{
-      height:21px;
+      height:20px;
       width:10px;
       margin:-2px -6px;
       position:absolute;
       box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
       border-color:rgba(23,23,23,.9);
-      &:hover {
+      &.is-moving {
        box-shadow: 0 0 2px #fff, inset 0 0 2px #fefefe;
      }
     }

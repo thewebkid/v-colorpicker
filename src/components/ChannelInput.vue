@@ -98,25 +98,37 @@
   div.input {
 
     position: relative;
-    margin-top:15px;
+    margin-top:3px;
     label.inline{
       position:relative;
       .line{
         position:absolute;
-        height:40px;
-        width:6px;
-        top:-7px;
-        right:-11px;
-        border-radius:3px;
-        border:solid .7px #eee;
+        height:42.5px;
+        width:8px;
+        top:-10px;
+        right:-75px;
+        border-radius:0 3px 3px 0;
+        border:solid .7px #666;
+        z-index: 9;
         .pct{
-          left:-4px;
+          left:-2px;
           margin-top:-.75px;
           position:absolute;
           width:10px;
-          height:1.5px;
-          background:white;
+          height:3px;
+          background:transparent;
+          border:solid .7px #888;
           display: inline-block;
+          &:before{
+            content:'';
+            height:4px;
+            width:5px;
+            position:absolute;
+            left:-1px;
+            top:-1.5px;
+            background-color:#eee;
+            clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+          }
         }
       }
       strong{font-weight:900;}
@@ -135,35 +147,36 @@
         z-index: 10;
         .inner{
           box-shadow:none;
-          border:solid .7px #eee;
           border-radius:3px;
           div{
-            box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
-            //background:linear-gradient(90deg, rgba(234,234,234,.9),rgba(234,234,234,.5),rgba(234,234,234,.9));
-            //background-color:rgba(234,234,234,.5);
+            margin-left:-5.5px;
             border-color:rgba(23,23,23,.9);
-            &:hover {
-              box-shadow: 0 0 2px #fff, inset 0 0 4px #fefefe;
-              //background:linear-gradient(90deg, rgba(234,234,234,.9),rgba(234,234,234,.5),rgba(234,234,234,.9));
+            &.is-moving {
+              border-color:#777;
             }
           }
         }
       }
     }
 
-    input[type=number] ,input[type=text] {
-      background:linear-gradient(180deg, #f8f8f8, #ddd);
+    input[type=number],input[type=text] {
+
+      position:relative;
+      left:-1px;
+      background:linear-gradient(180deg, #111, #000);
       font-size: 1rem;
       font-weight: 400;
       line-height: 1.5;
-      color: #495057;
+      color: #eee;
 
       background-clip: padding-box;
-      border: 1px solid transparent;
+      border: .7px solid #777;
       &:active,&:focus{
         outline: none;
-        box-shadow:0 0 4px white;
+        border:1px solid #fff;
+        box-shadow: 0px 0px 5px #fff;
       }
+
       border-radius: 0.25rem;
       display: inline-block;
       width: 60px;
@@ -172,8 +185,15 @@
         position:relative;
         top:-18px;
       }
-      height: calc(1.5em + .35rem + 2px);
+      height: 42px;
       padding: .25rem 0 .25rem .375rem;
+    }
+    input[type=number] {
+      border-radius: 0.25rem 0 0 0.25rem;
+      border-right:0;
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.5;
     }
     &.light{
       div.range-flyout-wrapper{
@@ -186,10 +206,13 @@
         border:none;
         outline:none;
         .line{
-          border:solid .7px #999;
-          right:-10px;
+          border:solid .7px #ddd;
+          //right:-12px;
           .pct{
-            background:#111;
+            border-color:#ddd;
+            &:before{
+              background-color:#444;
+            }
           }
         }
       }
@@ -198,7 +221,8 @@
         color: #111;
         &:active,&:focus{
           outline: none;
-          box-shadow:0 0 4px #aaa;
+          border:1px solid #4D90FE;
+          box-shadow: 0px 0px 5px  #4D90FE;
         }
       }
 

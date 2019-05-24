@@ -14,7 +14,7 @@
           left: colorCoordX + 'px',
           visibility:moving?'hidden':'visible'
         }"></div>-->
-    <canvas height="500" width="500" ref="hsw" @click="canvasClick($event)"></canvas>
+    <canvas :height="canvasSize" :width="canvasSize" ref="hsw" @click="canvasClick($event)"></canvas>
   </div>
 </template>
 
@@ -24,10 +24,14 @@ import {Color} from "../color";
   export default {
     data:()=>{
       return {
+        time:10,
         bouncer:null,
+        bounceRefine:true,
+        refine:[5,4,2,1],
+        refinePass:0,
         scale:1.6,
         size:160,
-        canvasSize:500,
+        canvasSize:100,
         moving:false
       }
     },
@@ -43,7 +47,9 @@ import {Color} from "../color";
     props:['hsw','isHsl','light'],//hsw is Hue, Sat, Whatever (v, l, b, etc.). It is dynamic handed from parent
     watch:{
       hsw(){
-        this.paintBouncer();
+        if(!this.moving) {
+          this.paintBouncer();
+        }
       }
     },
     mounted(){
@@ -61,12 +67,18 @@ import {Color} from "../color";
         let sat = Math.round((e.offsetX / this.size) * 100);
         let hsw = {h: this.hsw.h, s: sat};
         hsw[this.isHsl ? 'l':'v'] = w;
-        //console.log({hsw,x:e.offsetX,y:e.offsetY});
         this.$emit('variantchange', new Color(hsw));
+      },
+      resetPaintBounce(){
+        clearTimeout(this.bouncer);
+        this.refinePass = 0;
       },
       paintBouncer(){
         clearTimeout(this.bouncer);
-        this.bouncer = setTimeout(this.paintHsw, 40);
+        this.bouncer = setTimeout(()=>{
+          this.resetPaintBounce();
+          this.paintHsw();
+        }, this.time);
       },
       paintHsw(){
         if (!this.$refs.hsw){
@@ -77,17 +89,21 @@ import {Color} from "../color";
         const fill = this.isHsl ? fillHsl : fillHsv;
         let ctx = this.ctx || this.$refs.hsw.getContext('2d');
         let h = this.hsw.h;
-        //console.time('hsw'+h);
-        ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
+        //ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
         const unitSize = this.canvasSize / 100;
-        let incr = 2;
-        for (let s = 0; s < 100; s += incr){
-          for (let w = 0; w < 100; w += incr){
-            ctx.fillStyle = fill(h,s,w);
+        let incr = this.refine[this.refinePass];
+        for (let s = 0; s < 100; s += incr) {
+          for (let w = 0; w < 100; w += incr) {
+            ctx.fillStyle = fill(h, s, w);
             ctx.fillRect(s * unitSize, w * unitSize, (s + incr) * unitSize, (w + incr) * unitSize);
           }
         }
-        //console.timeEnd('hsw'+h);
+        if (this.refinePass < 3) {
+          this.bouncer = setTimeout(() => {
+            this.refinePass++;
+            this.paintHsw()
+          }, this.time);
+        }
       }
     }
   }

@@ -2,11 +2,10 @@
   <div style="position: relative">
     <movable
         class="circle" @move="circleMove" @start="moving=true" @complete="moving=false"
-
         :style="{
           top: y + 'px',
           left: x + 'px'
-        }"><!--<div v-if="moving" class="circle static"></div>--></movable>
+        }"/>
     <canvas width="720" height="200" ref="canvas" @click="canvasClick"></canvas>
   </div>
 </template>
@@ -17,10 +16,12 @@
   export default {
     data:()=>{
       return {
+        pureHS:{h:0,s:0},
         scale:1.25,
-        h:125,w:450,
+        h:125,w:449,
         x:0,y:0,
-        moving:false
+        moving:false,
+        bouncer:null
       }
     },
     computed:{
@@ -29,14 +30,17 @@
     name: "SimpleCanvas",
     props:['hsv'],
     mounted(){
-      this.render();
-      this.x = this.hsv.h * this.scale;
+      clearTimeout(this.bouncer);
+      this.bouncer = setTimeout(this.render,77);
+      this.pureHS = {h:this.hsv.h,s:this.hsv.s};
+      this.x = Math.max(0,Math.min(Math.round(this.hsv.h * this.scale),359));
       this.y = (this.hsv.s * this.scale);
     },
     watch:{
       hsv(hsv){
-        this.x = this.hsv.h * this.scale;
-        this.y = (this.hsv.s * this.scale);
+        this.render(this.hsv.v);
+        //this.x = this.hsv.h * this.scale;
+        //this.y = (this.hsv.s * this.scale);
       }
     },
     methods:{
@@ -49,20 +53,22 @@
         let y = this.y = Math.max(0,Math.min(this.h, e.offsetY));
         let scale = 1 / this.scale;
         let s = Math.round(y * scale);
-        let h = Math.round(x * scale);
-        //console.log({x,y,s,h});
+        let h = Math.max(0,Math.min(Math.round(x * scale),359));
+
         let hsv = {h, s, v:this.hsv.v};
+        this.pureHS = {h,s};
         this.$emit('variantchange', new Color(hsv));
       },
-      render(){
-        const fill = (h,s,v)=>new Color({h,s,v}).hex;
+      render(val){
+        let v = val===undefined?100:val;
+        const fill = (h,s)=>new Color({h,s,v}).hex;
         let ctx = this.$refs.canvas.getContext('2d');
         ctx.clearRect(0, 0, 888, 888);
         const unitSize = 2;
         let incr = 2;
         for (let h = 0; h < 360; h += incr){
           for (let w = 0; w < 100; w += incr){
-            ctx.fillStyle = fill(h,w,100);
+            ctx.fillStyle = fill(h,w);
             ctx.fillRect(h * unitSize, w * unitSize, (h + incr) * unitSize, (w + incr) * unitSize);
           }
         }
@@ -79,7 +85,9 @@
     cursor: crosshair;
     width:450px;
     height:125px;
-    //padding-right:10px;
-    margin:-10px 3px 12px -3px;
+  }
+  div{
+    //padding-right:5px;
+    margin:-10px 9px 8px -3px;
   }
 </style>

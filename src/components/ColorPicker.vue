@@ -89,7 +89,7 @@
   import Hue from './Hue.vue';
   import ChannelInput from './ChannelInput.vue';
   import allFormatsPopover from './AllFormatsPopover.vue';
-  import VariantSquare from './variant-square.vue';
+  import VariantSquare from './VariantSquare.vue';
   import {Color} from '../color.js';
   import SimpleCanvas from "./SimpleCanvas.vue";
   import hsvv from "./HSVV.vue";
@@ -264,6 +264,7 @@
 
     }
     td.input-col {
+      padding-top:12px;
       vertical-align: top;
       width: 144px;
       margin-right:-4px;
@@ -274,26 +275,6 @@
       width: 180px;
       padding: 12px 16px 0 4px;
     }
-    .hsvv{
-      position:relative;
-      height:20px;
-      width:200px;
-      background:linear-gradient(90deg, black, white);
-      border:solid 1px #888;
-      border-radius:3px;
-      margin:0 0 10px 10px;
-      .bar{
-        height:24px;
-        width:12px;
-        margin:-2px -6px;
-        position:absolute;
-        box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
-        border-color:rgba(23,23,23,.9);
-        &:hover {
-          box-shadow: 0 0 2px #fff, inset 0 0 2px #fefefe;
 
-        }
-      }
-    }
   }
 </style>

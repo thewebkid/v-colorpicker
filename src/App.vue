@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <h2>Static colorpicker</h2>
-    <colorpicker :options="options" value="blue"/>
+    <a href="https://www.npmjs.com/package/v-cpicker" rel="nofollow"><img src="https://badge.fury.io/js/v-cpicker.svg"
+                                                                          alt="npm version"></a>
+    <h2>Static colorpicker <span class="swatch" :style="{background:staticColor.hex}"></span></h2>
+    <colorpicker :options="options" value="blue" @preview="staticColorPreview"/>
     <b-form-checkbox v-model="options.light">
       Use light theme
     </b-form-checkbox>
@@ -39,95 +41,107 @@
 </template>
 
 <script>
-import colorpicker from './components/ColorPicker.vue';
+  import colorpicker from './components/ColorPicker.vue';
 
-export default {
-  data:()=>{
-    return {
-      options:{
-        light:true,
-        allowModeChange:true,
-        advanced:true,
-        alpha:true,
-        alphaHidden:false,
-        formatsPopup:true,
-        previewBars:true,
-        hslToggle:true
-      },
-      show:false,
-      previewColor: 'fuchsia'
-    }
-  },
-  name: 'app',
-  methods:{
-    picked(){
-      this.show = false;
+  export default {
+    data: () => {
+      return {
+        options: {
+          light: true,
+          allowModeChange: true,
+          advanced: true,
+          alpha: true,
+          alphaHidden: false,
+          formatsPopup: true,
+          previewBars: true,
+          hslToggle: true
+        },
+        show: false,
+        previewColor: 'fuchsia',
+        staticColor:{
+          hex:'blue'
+        }
+      }
     },
-    preview(c){
-      this.previewColor = c.hex;
+    name: 'app',
+    methods: {
+      picked() {
+        this.show = false;
+      },
+      preview(c) {
+        this.previewColor = c.hex;
+      },
+      staticColorPreview(c) {
+        this.staticColor = c;
+      }
+    },
+    components: {
+      colorpicker
     }
-  },
-  components: {
-    colorpicker
   }
-}
 </script>
 
 <style lang="scss">
   @import "~bootstrap/scss/bootstrap";
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 20px;
-  .control{
-    display: inline-block;
-    margin:112px;
-  }
-.cp{
-  position:absolute;
-  top:587px;
-  left:101px;
-}
-  .color-pie{
-    display: inline-block;
-    vertical-align: middle;
-    height:22px;
-    width:22px;
-    border-radius:50%;
-    box-shadow:0 0 3px #aaa;
-    background: conic-gradient(
-      rgb(61,159,232) 0deg 45deg,
-      rgb(115,18,237) 45deg 90deg,
-      rgb(232,64,115) 90deg 135deg,
-      rgb(185,22,41) 135deg 180deg,
-      rgb(240,65,34) 180deg 225deg,
-      rgb(254,211,55) 225deg 270deg,
-      rgb(83,166,86) 270deg 315deg,
-      rgb(112,218,232) 315deg 360deg
-    );
-    position:relative;
-    &:after{
-      content:'';
-      position:absolute;
-      top:6px;
-      left:6px;
-      background:$light;
-      border-radius: 5px;
-      height:10px;
-      width:10px;
-      box-shadow:inset 0 0 2px #999;
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 20px;
+
+    .control {
+      display: inline-block;
+      margin: 112px;
+    }
+
+    .cp {
+      position: absolute;
+      top: 587px;
+      left: 101px;
+    }
+
+    .color-pie {
+      display: inline-block;
+      vertical-align: middle;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      box-shadow: 0 0 3px #aaa;
+      background: conic-gradient(
+              rgb(61, 159, 232) 0deg 45deg,
+              rgb(115, 18, 237) 45deg 90deg,
+              rgb(232, 64, 115) 90deg 135deg,
+              rgb(185, 22, 41) 135deg 180deg,
+              rgb(240, 65, 34) 180deg 225deg,
+              rgb(254, 211, 55) 225deg 270deg,
+              rgb(83, 166, 86) 270deg 315deg,
+              rgb(112, 218, 232) 315deg 360deg
+      );
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        background: $light;
+        border-radius: 5px;
+        height: 10px;
+        width: 10px;
+        box-shadow: inset 0 0 2px #999;
+      }
+    }
+
+    .swatch {
+      margin-left: 5px;
+      display: inline-block;
+      vertical-align: middle;
+      height: 15px;
+      width: 15px;
+      border-radius: 2px;
+      box-shadow: 0 0 1px #111, inset 0 0 1px #333;
+      background: white;
     }
   }
-  .swatch{
-    margin-left:5px;
-    display: inline-block;
-    vertical-align: middle;
-    height: 15px;
-    width:15px;
-    border-radius: 2px;
-    box-shadow:0 0 1px #111, inset 0 0 1px #333;
-    background:white;
-  }
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="hsvv" @click="vclick">
+  <div class="hsvv" @click="vclick" :style="{'background-image':`linear-gradient(90deg, ${gradient(0)}, ${gradient(100)})`}">
     <movable class="bar" :horizontal="[-x, 200 - x]" :style="{background:bg, left:(left===null ? x : left) + 'px'}" @move="moved"/>
   </div>
 </template>
@@ -12,17 +12,42 @@
       return {
         left:null,
         x:0,
-        moving:false
+        hs:{},
+        moving:false,
+        sibling:null
       }
     },
     computed:{
+      c(){
+        return this.sibling ? this.sibling.pureHS : this.hsv;
+      },
+      h(){
+        return this.c.h;
+      },
+      s(){
+        return this.c.s;
+      },
+      v(){
+        return this.left / 2
+      },
+      gradient(){
+        return v => new Color({h:this.h,s:this.s,v}).hex
+      },
       bg(){
-        let byte = Math.round(this.hsv.v * 2.55);
-        return new Color([byte,byte,byte]).hex;
+        //let byte = Math.round(this.hsv.v * 2.55);
+        return new Color({h:this.h,s:this.s,v:this.v}).hex;//new Color([byte,byte,byte]).hex;
       }
     },
     mounted(){
-      this.x = this.hsv.v * 2;
+      this.sibling = this.$parent.$children.find(c=>c.scale !==undefined);
+      //console.log(this.sibling);
+      this.x = this.left = this.hsv.v * 2;
+    },
+    watch:{
+      hsv(){
+        this.sibling = this.$parent.$children.find(c=>c.scale !==undefined);
+        this.hs = this.c;
+      }
     },
     methods:{
       vclick({offsetX}){
@@ -46,18 +71,26 @@
     height:20px;
     width:200px;
     background:linear-gradient(90deg, black, white);
-    border:solid 1px #888;
+    border: solid 1px #444;
     border-radius:3px;
     margin:0 0 10px 10px;
     .bar{
       height:24px;
       width:12px;
-      margin:-2px -6px;
+      margin:-3px -6px -2px -6px;
       position:absolute;
-      box-shadow: 0 0 .7px #eee, inset 0 0 1px #111;
-      border-color:rgba(23,23,23,.9);
-      &:hover {
-        box-shadow: 0 0 2px #fff, inset 0 0 2px #fefefe;
+      border-radius:3px;
+      border: solid 1px #444;
+      &.is-moving {
+        border-color:#777;
+      }
+    }
+  }
+  .light {
+    .hsvv {
+      border: solid 1px #ddd;
+      .bar {
+        border: solid 1px #ddd;
       }
     }
   }

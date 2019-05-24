@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "0.2.2",
+  "version": "1.0.0-beta.2",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": ["vue","vue-component","javascript","colorpicker"],
@@ -21,7 +21,7 @@
 
   "dependencies": {
     "v-range-flyout": "0.2.5",
-    "v-movable": "0.1.8",
+    "v-movable": "0.2.3",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.3.0"
   },
