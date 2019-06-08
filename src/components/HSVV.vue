@@ -1,6 +1,6 @@
 <template>
-  <div class="hsvv" @click="vclick" :style="{'background-image':`linear-gradient(90deg, ${gradient(0)}, ${gradient(100)})`}">
-    <movable class="bar" :horizontal="[-x, 200 - x]" :style="{background:bg, left:(left===null ? x : left) + 'px'}" @move="moved"/>
+  <div class="hsvv" :class="{compact}" @click="vclick" :style="{'background-image':`linear-gradient(90deg, ${gradient(0)}, ${gradient(100)})`}">
+    <movable class="bar" :horizontal="[-x, w - x]" :style="{background:bg, left:(left===null ? x : left) + 'px'}" @move="moved"/>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
   export default {
     data:()=>{
       return {
+
         left:null,
         x:0,
         hs:{},
@@ -28,7 +29,7 @@
         return this.c.s;
       },
       v(){
-        return this.left / 2
+        return this.left / this.scale
       },
       gradient(){
         return v => new Color({h:this.h,s:this.s,v}).hex
@@ -36,12 +37,22 @@
       bg(){
         //let byte = Math.round(this.hsv.v * 2.55);
         return new Color({h:this.h,s:this.s,v:this.v}).hex;//new Color([byte,byte,byte]).hex;
+      },
+      scale(){
+        return this.compact ? 1 : 2;
+      },
+      w(){
+        return this.compact ? 100 : 200;
+      },
+      compact(){
+        return this.$parent.opt('compact')
       }
     },
     mounted(){
       this.sibling = this.$parent.$children.find(c=>c.scale !==undefined);
       //console.log(this.sibling);
-      this.x = this.left = this.hsv.v * 2;
+      this.x = this.left = this.hsv.v * this.scale;
+      this.$nextTick().then(() => this.$emit('hsvvChange', new Color(this.hsv)))
     },
     watch:{
       hsv(){
@@ -55,8 +66,8 @@
         this.moved({css});
       },
       moved({css}){
-        let hsv = Object.assign(this.hsv, {v: Math.round(css.left/2)});
-        this.left = Math.max(0,Math.min(200,css.left));
+        let hsv = Object.assign(this.hsv, {v: Math.round(css.left/this.scale)});
+        this.left = Math.max(0,Math.min(this.w,css.left));
         this.$emit('hsvvChange', new Color(hsv));
       }
     },
@@ -70,10 +81,14 @@
     position:relative;
     height:20px;
     width:200px;
+
     background:linear-gradient(90deg, black, white);
     border: solid 1px #444;
     border-radius:3px;
     margin:0 0 10px 10px;
+    &.compact{
+      width:100px;
+    }
     .bar{
       height:24px;
       width:12px;

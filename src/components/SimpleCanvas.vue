@@ -1,12 +1,12 @@
 <template>
-  <div style="position: relative">
+  <div style="position: relative" :class="{compact}" >
     <movable
         class="circle" @move="circleMove" @start="moving=true" @complete="moving=false"
         :style="{
           top: y + 'px',
           left: x + 'px'
         }"/>
-    <canvas width="720" height="200" ref="canvas" @click="canvasClick"></canvas>
+    <canvas :class="{compact}" width="720" height="200" ref="canvas" @click="canvasClick"></canvas>
   </div>
 </template>
 
@@ -17,15 +17,24 @@
     data:()=>{
       return {
         pureHS:{h:0,s:0},
-        scale:1.25,
-        h:125,w:449,
-        x:0,y:0,
+        x:0, y:0,
         moving:false,
         bouncer:null
       }
     },
     computed:{
-
+      scale(){
+        return this.compact ? 1 : 1.25;
+      },
+      h(){
+        return this.compact ? 100 : 125;
+      },
+      w(){
+        return this.compact ? 360 : 449;
+      },
+      compact(){
+        return this.$parent.opt('compact')
+      }
     },
     name: "SimpleCanvas",
     props:['hsv'],
@@ -60,7 +69,7 @@
         this.$emit('variantchange', new Color(hsv));
       },
       render(val){
-        let v = val===undefined?100:val;
+        let v = val === undefined ? this.hsv.v : val;
         const fill = (h,s)=>new Color({h,s,v}).hex;
         let ctx = this.$refs.canvas.getContext('2d');
         ctx.clearRect(0, 0, 888, 888);
@@ -85,6 +94,10 @@
     cursor: crosshair;
     width:450px;
     height:125px;
+    &.compact{
+      width:360px;
+      height:100px;
+    }
   }
   div{
     //padding-right:5px;

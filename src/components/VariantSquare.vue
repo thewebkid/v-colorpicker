@@ -1,5 +1,5 @@
 <template>
-  <div class="canvas" :class="{light}">
+  <div class="canvas" :class="{light,compact}">
 
     <movable
         class="circle" @move="circleMove" @start="moving=true" @complete="moving=false"
@@ -14,7 +14,7 @@
           left: colorCoordX + 'px',
           visibility:moving?'hidden':'visible'
         }"></div>-->
-    <canvas :height="canvasSize" :width="canvasSize" ref="hsw" @click="canvasClick($event)"></canvas>
+    <canvas :height="canvasSize" :width="canvasSize" ref="hsw" @click="canvasClick($event)" :class="{compact}"></canvas>
   </div>
 </template>
 
@@ -29,13 +29,20 @@ import {Color} from "../color";
         bounceRefine:true,
         refine:[5,4,2,1],
         refinePass:0,
-        scale:1.6,
-        size:160,
         canvasSize:100,
         moving:false
       }
     },
     computed:{
+      scale(){
+        return this.compact ? 1 : 1.6;
+      },
+      size(){
+        return this.compact ? 100 : 160;
+      },
+      compact(){
+        return false;//this.$parent.opt('compact')
+      },
       colorCoordX(){
         return this.hsw.s * this.scale;
       },
@@ -56,7 +63,6 @@ import {Color} from "../color";
       this.paintBouncer();
     },
     methods:{
-
       circleMove(args){
         let e = {offsetX:args.css.left,offsetY:args.css.top};
         this.canvasClick(e);
@@ -115,10 +121,18 @@ import {Color} from "../color";
       height: 160px;
       width: 160px;
       display: block;
+      &.compact{
+        height:100px;
+        width:100px;
+      }
     }
     .canvas{
       height: 162px;
       width: 162px;
+      &.compact{
+        height:102px;
+        width:102px;
+      }
       margin:5px -2px 0 -1px;
       border: solid 1px #777;
       position:relative;
