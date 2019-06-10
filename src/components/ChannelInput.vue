@@ -1,5 +1,5 @@
 <template>
-  <div class="input" v-if="v!==null" :class="{light}">
+  <div class="input" v-if="v!==null" :class="{light,compact}">
     <label class="inline" :style="{fontWeight:activeRF?900:100}">
       <span class="line" :style="{background:bg}" v-if="previewBars">
         <span class="pct" :style="{top:(pct*100)+'%'}"></span>
@@ -35,6 +35,9 @@
     computed:{
       previewBars(){
         return !this.activeRF && (!this.$parent.options || this.$parent.options.previewBars !== false);
+      },
+      compact(){
+        return this.$parent.opt('compact')
       },
       light(){
         return this.$parent.opt('light')

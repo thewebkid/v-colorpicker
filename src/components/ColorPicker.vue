@@ -1,5 +1,5 @@
 <template>
-  <div  class="colorpicker-wrap" :class="{light:opt('light')}">
+  <div  class="colorpicker-wrap" :class="{light:opt('light'),compact:opt('compact')}">
     <div class="top" v-if="advanced">
       <Hue :hsv="previewColor.HSV" @hueChange="updateColor"/>
     </div>
@@ -69,11 +69,11 @@
         <td v-else style="vertical-align: top;padding-top:8px;">
           <hsvv :hsv="previewColor.HSV" @hsvvChange="updateColor"/>
         </td>
-        <td  style="padding-top:1px">
-          <a class="btn-lg btn-outline float-right" :class="{'btn-dark':!opt('light')}" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
+        <td style="padding-top:1px">
+          <b-button size="sm" id="okBtn" class="btn-outline float-right" :variant="opt('light') ? 'light':'dark'" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
             OK
             <span class="dswatch" :style="{'background-color': previewColor.rgbaString}"></span>
-          </a>
+          </b-button>
         </td>
       </tr>
       </tbody>
@@ -112,8 +112,11 @@
         bouncer:null,
         mode:'',
         hueGradient:'',
+        savedState:{},
         advanced:true,
         defaultOptions:{
+          sticky:true,
+          compact:false,
           light:false,
           allowModeChange:true,
           advanced:false,
@@ -135,12 +138,6 @@
           }
         }
       },
-      startAdvanced(){
-        return this.options && this.options.advanced;
-      },
-      enableAlpha(){
-        return this.options && this.options.alpha;
-      },
       hsw(){
         let c = this.previewColor;
         let hsl = this.mode === 'hsl';
@@ -155,24 +152,49 @@
     props: [
       'value','options'
     ],
+    created(){
+
+    },
     mounted() {
       const vm = this;
-      this.advanced = this.options && this.options.advanced === true;
+      let savedState = localStorage.getItem('v-cpicker');
+      if (savedState){
+        savedState = this.savedState = JSON.parse(savedState);
+
+        if (!savedState.mode){
+          this.savedState.mode = 'hsl';
+        }
+        this.advanced = savedState.advanced;
+        this.mode = savedState.mode;
+      }else {
+        this.advanced = this.options && this.options.advanced === true;
+        this.savedState = {
+          advanced:this.advanced,
+          mode:'hsl'
+        };
+        localStorage.setItem('v-cpicker', JSON.stringify(this.savedState))
+      }
       this.startColor = new Color(this.value);
       this.updateColor(this.value,true);
       this.hueGradient = Color.hueColorStops();
       this.canRender = true;
 
       Vue.nextTick().then(() => {
-        vm.mode = 'hsl';
+        vm.mode = this.savedState.mode;
       });
     },
     watch:{
       options(opts){
         //console.log(opts);
       },
-      startAdvanced(a){
-        this.advanced = a;
+      advanced(flag){
+        this.savedState.advanced = flag;
+        localStorage.setItem('v-cpicker', JSON.stringify(this.savedState));
+        console.log(flag)
+      },
+      mode(m){
+        this.savedState.mode = m;
+        localStorage.setItem('v-cpicker', JSON.stringify(this.savedState))
       },
       enableAlpha(enable){
         if (enable){
@@ -219,7 +241,7 @@
     color:#eee;
 
     &.light{
-      .btn-lg{background:linear-gradient(180deg,  #e7e7e7, #d3d3d3);}
+      #okBtn{background:linear-gradient(180deg,  #e7e7e7, #d3d3d3);}
       background: linear-gradient(180deg, #f7f7f7, #e7e7e7, #e3e3e3);
       color:#111;
       a{
@@ -235,19 +257,24 @@
     box-shadow:0 0 3px #777777;
     border-radius:8px;
     padding:17px 10px 5px 10px;
-    .btn-lg {
+    #okBtn {
       cursor:pointer;
-      margin:0 15px 12px  0;
+      position:relative;
+      left:-2px;
+      margin:0 0px 12px  0;
       box-shadow:0 0 1px #222;
-      padding:6px 16px;
+      padding:6px 10px;
+      border-color:#ccc;
       .dswatch {
-         margin-left:5px;
-         display: inline-block;
-         height: 15px;
-         width: 15px;
-         border-radius: 2px;
-         box-shadow: 0 0 1px #fff, inset 0 0 1px #eee;
-         background: white;
+        margin-left:5px;
+        position:relative;
+        top:2px;
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+        border-radius: 2px;
+        box-shadow: 0 0 1px #fff, inset 0 0 1px #eee;
+        background: white;
       }
     }
     hr{

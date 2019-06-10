@@ -187,6 +187,9 @@ export class Color {
       this.r = colorByte(input);
       this.g = colorByte(g);
       this.b = colorByte(b);
+      if (this.a !== undefined){
+        this.a = a;
+      }
     }
     if (Array.isArray(input)) {
       return Color.fromArray(input);
