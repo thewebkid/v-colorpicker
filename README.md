@@ -13,6 +13,7 @@ Currently in active development - please file a github issue if you have a bug o
     Vue.use(colorpicker);
 
 ### Options (set as :options="optionsObject")
+- **compact**: (_default=false_) Compact layout
 - **light**: (_default=true_) Use light theme
 - **allowModeChange**: (_default=true_) Allow simple/advanced mode change (checkbox on UI) 
 - **advanced**:(_default=false_) Start in advanced mode

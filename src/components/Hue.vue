@@ -1,5 +1,5 @@
 <template>
-  <div class="hue-gradient" :style="{background:`linear-gradient(90deg, ${hueGradient})`}" @click="hueClick">
+  <div class="hue-gradient" :class="{compact}" :style="{background:`linear-gradient(90deg, ${hueGradient})`}" @click="hueClick">
     <movable class="bar" :horizontal="[-x, w - x]" :style="{background:bg, left: x + 'px'}" @move="moved"/>
   </div>
 </template>
@@ -10,16 +10,24 @@
   export default {
     data: () => {
       return {
-        hueGradient:'',
-        w:450,
-        x:0,
-        scale:1.25,
-        moveScale:.8
+        hueGradient:'',x:0
       }
     },
     computed:{
+      scale(){
+        return this.compact ? 1 : 1.25;
+      },
+      w(){
+        return this.compact ? 360 : 450;
+      },
+      moveScale(){
+        return this.compact ? 1 : .8;
+      },
       bg(){
         return new Color({h:this.hsv.h, s:100, v:100}).hex;
+      },
+      compact(){
+        return this.$parent.opt('compact');
       }
     },
     name: "Hue",
@@ -53,6 +61,9 @@
   .hue-gradient {
     height: 17px;
     width: 450px;
+    &.compact{
+      width:360px;
+    }
     margin:0 0 2px 3px;
     border:solid 1px #777;
     position: relative;

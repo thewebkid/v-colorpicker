@@ -11,7 +11,7 @@
                         @channel-change="channelChange"/>
 
           <template v-if="!opt('alphaHidden')">
-            <ChannelInput v-if="previewColor.a !== undefined" lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
+            <ChannelInput v-if="opt('compact') || previewColor.a !== undefined" lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
                           @channel-change="channelChange"/>
             <a v-else @click="addAlpha" style="margin-top:19px;display: block;cursor: pointer">+ Alpha</a>
           </template>
@@ -23,16 +23,25 @@
                         @channel-change="channelChange"/>
           <ChannelInput :lbl="hsw.wl" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
                         @channel-change="channelChange"/>
-          <div class="mt-3" style="text-align: right;padding-right:13px;font-size:13px" v-if="opt('hslToggle')">
+
+          <div class="mt-3" style="text-align: right;padding-right:13px;font-size:13px" v-if="opt('hslToggle') && !opt('compact')">
             <b-button-group size="sm" style="font-size: 0.75rem;">
               <b-button  :variant="mode==='hsl'?'success':''" @click="mode='hsl'">HSL</b-button>
               <b-button  :variant="mode==='hsv'?'success':''" @click="mode='hsv'">HSV</b-button>
             </b-button-group>
           </div>
-
+          <div class="input" :class="{light:opt('light'),compact:opt('compact')}" v-if="opt('compact')">
+            <input type="text" v-model="hexVal" @change="updateColor(hexVal, true)" class="hex"/>
+          </div>
         </td>
         <td class="variant-square">
           <variant-square v-if="canRender" :hsw="hsw" :isHsl="mode==='hsl'" :light="opt('light')" @variantchange="updateColor"/>
+          <div style="text-align: right;padding:5px 0px;font-size:13px" v-if="opt('hslToggle') && opt('compact')">
+            <b-button-group size="sm" style="font-size: 0.75rem;">
+              <b-button  :variant="mode==='hsl'?'success':''" @click="mode='hsl'">HSL</b-button>
+              <b-button  :variant="mode==='hsv'?'success':''" @click="mode='hsv'">HSV</b-button>
+            </b-button-group>
+          </div>
         </td>
       </tr>
       <tr v-else>
@@ -40,7 +49,7 @@
           <SimpleCanvas v-if="canRender" :hsv="previewColor.HSV" @variantchange="updateColor"/>
         </td>
       </tr>
-      <tr v-if="advanced">
+      <tr v-if="advanced && !opt('compact')">
         <td colspan="3">
           <hr>
         </td>
@@ -55,9 +64,9 @@
 
         </td>
         <td class="input-col" v-if="advanced" :colspan="opt('allowModeChange') ? 1 : 2">
-          <div class="input" style="display: inline-block;margin:-2px -40px 0 -12px">
-            <label class="inline">Hex
-              <br><a id="popover-strings" style="cursor: pointer;" :style="{visibility:opt('formatsPopup') ? 'visible':'hidden'}">
+          <div class="input" style="display: inline-block;margin:-20px -40px 0 -12px;text-align:right" v-if="!opt('compact')">
+            <label class="inline">
+              <a id="popover-strings" style="cursor: pointer;" :style="{visibility:opt('formatsPopup') ? 'visible':'hidden'}">
               <small>All&nbsp;formats</small>
             </a></label>
             <input type="text" v-model="hexVal" @change="updateColor(hexVal, true)" class="hex"/>
@@ -178,7 +187,9 @@
       this.updateColor(this.value,true);
       this.hueGradient = Color.hueColorStops();
       this.canRender = true;
-
+      if (this.options.compact){
+        this.addAlpha();
+      }
       Vue.nextTick().then(() => {
         vm.mode = this.savedState.mode;
       });
@@ -302,6 +313,30 @@
       width: 180px;
       padding: 12px 16px 0 4px;
     }
-
+    &.compact{
+      hr{
+        margin:3px 0 -3px -7px
+      }
+      table {
+        max-width: 413px;
+      }
+      td.input-col {
+        width: 128px;
+        input[type=text].hex {
+          background: linear-gradient(180deg, #fff, #fff);
+          color: #111;
+          top:37px;
+          left:7px;
+          &:active,&:focus{
+            outline: none;
+            border:1px solid #4D90FE;
+            box-shadow: 0px 0px 5px  #4D90FE;
+          }
+        }
+      }
+      td.variant-square{
+        width:120px;
+      }
+    }
   }
 </style>

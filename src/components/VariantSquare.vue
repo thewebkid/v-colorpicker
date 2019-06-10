@@ -41,7 +41,7 @@ import {Color} from "../color";
         return this.compact ? 100 : 160;
       },
       compact(){
-        return false;//this.$parent.opt('compact')
+        return this.$parent.opt('compact')
       },
       colorCoordX(){
         return this.hsw.s * this.scale;

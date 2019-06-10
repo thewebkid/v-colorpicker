@@ -4,7 +4,7 @@
       <span class="line" :style="{background:bg}" v-if="previewBars">
         <span class="pct" :style="{top:(pct*100)+'%'}"></span>
       </span>
-      {{lbl}}
+      {{compact ? lbl.charAt(0) : lbl}}
     </label>
     <range-flyout
         :min="0" :max="max" :incr="incr" :val="v"
@@ -98,8 +98,25 @@
 </script>
 
 <style lang="scss">
-  div.input {
 
+  div.input {
+    &.compact{
+      label.inline{
+
+          width:12px;
+          .line{
+            height:36.5px;
+            top:-6px;
+          }
+      }
+      input[type=number],input[type=text] {
+        font-size: .9rem;
+        line-height: 1;
+
+        height: 36px;
+        padding: .125rem 0 .125rem .375rem;
+      }
+    }
     position: relative;
     margin-top:3px;
     label.inline{
@@ -186,7 +203,7 @@
       &.hex{
         width:80px;
         position:relative;
-        top:-18px;
+        //top:-18px;
       }
       height: 42px;
       padding: .25rem 0 .25rem .375rem;
