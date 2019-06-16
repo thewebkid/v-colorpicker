@@ -180,9 +180,6 @@ const hueColorStops = 'rgb(255, 0, 0) 0%, rgb(255, 42, 0) 2.8%, rgb(255, 85, 0) 
 
 export class Color {
   constructor(input,g,b,a) {
-    if (input==='fuschia'){
-      console.log(input);
-    }
     if (g !== undefined && b!== undefined){
       this.r = colorByte(input);
       this.g = colorByte(g);
@@ -217,7 +214,7 @@ export class Color {
         }else if (input.l !== undefined){
           c = Color.fromHsl(input);
         }else {
-          return Color.fromArray(0, 0, 0);
+          return Color.fromArray([0, 0, 0]);
         }
         c.a = input.a !== undefined ? toFlt(input.a) : undefined;
         return new Color(c);
@@ -316,7 +313,11 @@ export class Color {
     return JSON.stringify([this.r, this.g, this.b]);
   }
   get rgbObj() {
-    return {r:this.r,g:this.g,b:this.b};
+    let o = {r:this.r,g:this.g,b:this.b};
+    if (this.a !== undefined){
+      o.a = this.a;
+    }
+    return o;
   }
 
   get rgbString() {

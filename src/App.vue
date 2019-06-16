@@ -3,7 +3,7 @@
     <a href="https://www.npmjs.com/package/v-cpicker" rel="nofollow"><img src="https://badge.fury.io/js/v-cpicker.svg"
                                                                           alt="npm version"></a>
     <h2>Static colorpicker <span class="swatch" :style="{background:staticColor.hex}"></span></h2>
-    <colorpicker :options="options" value="#191943" @preview="staticColorPreview"/>
+    <colorpicker :options="options" :value="[1,23,145,.3]" @preview="staticColorPreview"/>
     <b-form-checkbox v-model="options.compact">
       Compact mode
     </b-form-checkbox>

@@ -105,10 +105,10 @@
   Vue.use(rangeFlyout);
   Vue.use(movable);
   Vue.use(BootstrapVue);
-
-
+  const debug = window._debugColorPicker === true;
   const rgb = 'rgb';
   const isHsl = c => rgb.indexOf(c) === -1;
+
   export default {
     data: () => {
       return {
@@ -187,12 +187,16 @@
       this.updateColor(this.value,true);
       this.hueGradient = Color.hueColorStops();
       this.canRender = true;
-      if (this.options.compact){
+      if (this.opt('alpha')){
         this.addAlpha();
       }
       Vue.nextTick().then(() => {
         vm.mode = this.savedState.mode;
       });
+      if(debug){
+        console.log(`**********colorpicker debug (mounted)***********`);
+        console.log({startColor:this.startColor,value:this.value,previewColor:this.previewColor})
+      }
     },
     watch:{
       options(opts){
@@ -217,7 +221,9 @@
     },
     methods: {
       addAlpha(){
-        this.updateColor(new Color(Object.assign(this.previewColor.rgbObj,{a:1})));
+        if (this.previewColor.a === undefined) {
+          this.updateColor(new Color(Object.assign(this.previewColor.rgbObj, {a: 1})));
+        }
       },
       channelChange({c, v}) {
         const vm = this;
@@ -232,7 +238,7 @@
         }
       },
       updateColor(updatedColor,construct){
-        if (construct===true){
+        if (construct===true || updatedColor.constructor.name !== 'Color'){
           updatedColor = new Color(updatedColor);
         }
         this.previewColor = updatedColor;
