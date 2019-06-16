@@ -105,7 +105,7 @@
   Vue.use(rangeFlyout);
   Vue.use(movable);
   Vue.use(BootstrapVue);
-  const debug = window._debugColorPicker === true;
+  const debug = ()=>window._debugColorPicker === true;
   const rgb = 'rgb';
   const isHsl = c => rgb.indexOf(c) === -1;
 
@@ -193,7 +193,7 @@
       Vue.nextTick().then(() => {
         vm.mode = this.savedState.mode;
       });
-      if(debug){
+      if(debug()){
         console.log(`**********colorpicker debug (mounted)***********`);
         console.log({startColor:this.startColor,value:this.value,previewColor:this.previewColor})
       }
