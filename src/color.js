@@ -232,7 +232,7 @@ export class Color {
       g: colorByte(input[1]),
       b: colorByte(input[2])
     };
-    if (input[3]) {
+    if (input[3] !== undefined) {
       c.a = toFlt(input[3]);
     }
     return new Color(c);
