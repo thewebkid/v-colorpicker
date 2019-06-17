@@ -75,6 +75,9 @@
         this.chan = this.lbl.charAt(0).toLowerCase();
         this.colorBase = this.baseColor||this.previewColor;
         this.v = this.previewColor[this.chan];
+        if (this.chan === 'a' && this.v === undefined){
+          this.$emit('channel-change',{c:this.chan,v:1});
+        }
         this.slideBg();
       },
       slideBg(){

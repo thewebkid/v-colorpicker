@@ -123,6 +123,7 @@
         hueGradient:'',
         savedState:{},
         advanced:true,
+        alphaChannel:1,
         defaultOptions:{
           sticky:true,
           compact:false,
@@ -227,10 +228,14 @@
       },
       channelChange({c, v}) {
         const vm = this;
+        if (c ==='a'){
+          this.alphaChannel = v;
+        }
         if (isHsl(c)) {
           let hsw = this.hsw;
           hsw[c] = v;
-          vm.updateColor(new Color(hsw));
+          let updatedColor = new Color(hsw);
+          vm.updateColor(updatedColor);
         } else {
           let rgb = vm.previewColor.rgbObj;
           rgb[c] = v;
@@ -240,8 +245,13 @@
       updateColor(updatedColor,construct){
         if (construct===true || updatedColor.constructor.name !== 'Color'){
           updatedColor = new Color(updatedColor);
+          if (updatedColor.a !== undefined){
+            this.alphaChannel = updatedColor.a;
+          }
         }
+        updatedColor.a = this.alphaChannel;
         this.previewColor = updatedColor;
+
         this.hexVal = this.previewColor.hex;
         Vue.nextTick().then(() => {
           this.$emit('preview', this.previewColor);

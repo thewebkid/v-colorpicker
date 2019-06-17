@@ -1,5 +1,5 @@
 <template>
-  <div class="hsvv" :class="{compact}" @click="vclick" :style="{'background-image':`linear-gradient(90deg, ${gradient(0)}, ${gradient(100)})`}">
+  <div class="hsvv" v-if="init" :class="{compact}" @click="vclick" :style="{'background-image':`linear-gradient(90deg, ${gradient(0)}, ${gradient(100)})`}">
     <movable class="bar" :horizontal="[-x, w - x]" :style="{background:bg, left:(left===null ? x : left) + 'px'}" @move="moved"/>
   </div>
 </template>
@@ -10,7 +10,7 @@
   export default {
     data:()=>{
       return {
-
+        init:false,
         left:null,
         x:0,
         hs:{},
@@ -50,9 +50,9 @@
     },
     mounted(){
       this.sibling = this.$parent.$children.find(c=>c.scale !==undefined);
-      //console.log(this.sibling);
       this.x = this.left = this.hsv.v * this.scale;
-      this.$nextTick().then(() => this.$emit('hsvvChange', new Color(this.hsv)))
+      this.$nextTick().then(() => this.$emit('hsvvChange', new Color(this.hsv)));
+      this.init = true;
     },
     watch:{
       hsv(){
