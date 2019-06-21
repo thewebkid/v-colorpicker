@@ -2,10 +2,7 @@
   <b-popover
       target="popover-strings"
       triggers="click" placement="auto"
-      container="my-container"
-      ref="popover"
-  >
-
+      ref="popover">
     <div class="pop-wrap">
       <div v-for="(item,i) in formats" :key="i" class="container" :title="item.title">
         <input v-model="color[item.getter]"/>
@@ -29,17 +26,14 @@
           title: 'Hexadecimal Web format',
           getter: 'hex'
         }, {
-          title: 'RGBA Web format',
-          getter: 'rgbaString'
-        }, {
           title: 'RGB Web format',
           getter: 'rgbString'
         }, {
           title: 'HSL Web format',
-          getter: 'HSLString'
+          getter: 'hslString'
         }, {
           title: 'HSV format',
-          getter: 'HSVString'
+          getter: 'hsvString'
         }, {
           title: 'Plain rgb array [r, g, b]',
           getter: 'rgbArrayString'

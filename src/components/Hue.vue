@@ -5,7 +5,8 @@
 </template>
 
 <script>
-  import {Color} from "../color";
+  import {Color} from "modern-color";
+  import {hueColorStops} from "../color";
 
   export default {
     data: () => {
@@ -34,8 +35,10 @@
     },
     name: "Hue",
     mounted() {
-      this.hueGradient = Color.hueColorStops();
-      this.x = this.hsv.h * this.scale;
+      this.hueGradient = hueColorStops;
+      if (this.hsv) {
+        this.x = this.hsv.h * this.scale;
+      }
       this.init = true;
     },
     watch:{

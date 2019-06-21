@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import {Color} from "../color";
+  import {Color} from 'modern-color';
 
   export default {
     data:()=>{

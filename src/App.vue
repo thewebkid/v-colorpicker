@@ -45,6 +45,7 @@
 
 <script>
   import colorpicker from './components/ColorPicker.vue';
+  import {Color,namedColors} from "modern-color";
 
   export default {
     data: () => {
@@ -71,6 +72,7 @@
     name: 'app',
     methods: {
       picked() {
+        console.log(Color.fromHex('#fff'));
         this.show = false;
       },
       preview(c) {

@@ -16,6 +16,7 @@
 
 <script>
   import Vue from 'vue';
+  import {channelGradient} from "../color";
 
   export default {
     data:()=>{
@@ -84,7 +85,7 @@
         if (!this.colorBase || this.hide){
           return;
         }
-        this.bg = this.colorBase.channelGradient(this.chan);
+        this.bg = channelGradient(this.colorBase, this.chan);
       },
       changed(v){
         this.pct = 1 - (v / this.max);

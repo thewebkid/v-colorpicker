@@ -1,7 +1,7 @@
 <template>
   <div  class="colorpicker-wrap" :class="{light:opt('light'),compact:opt('compact')}">
     <div class="top" v-if="advanced">
-      <Hue :hsv="previewColor.HSV" @hueChange="updateColor"/>
+      <Hue :hsv="previewColor.hsv" @hueChange="updateColor"/>
     </div>
     <table :style="{marginBottom: !advanced ? '-9px' : 0}">
       <tbody>
@@ -46,7 +46,7 @@
       </tr>
       <tr v-else>
         <td colspan="3">
-          <SimpleCanvas v-if="canRender" :hsv="previewColor.HSV" @variantchange="updateColor"/>
+          <SimpleCanvas v-if="canRender" :hsv="previewColor.hsv" @variantchange="updateColor"/>
         </td>
       </tr>
       <tr v-if="advanced && !opt('compact')">
@@ -72,16 +72,16 @@
             <input type="text" v-model="hexVal" @change="updateColor(hexVal, true)" class="hex"/>
             <br>
           </div>
-          <all-formats-popover :color="previewColor"/>
+          <all-formats-popover :color="previewColor" v-if="opt('formatsPopup')"/>
 
         </td>
         <td v-else style="vertical-align: top;padding-top:8px;">
-          <hsvv :hsv="previewColor.HSV" @hsvvChange="updateColor"/>
+          <hsvv :hsv="previewColor.hsv" @hsvvChange="updateColor"/>
         </td>
         <td style="padding-top:1px">
           <b-button size="sm" id="okBtn" class="btn-outline float-right" :variant="opt('light') ? 'light':'dark'" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
             OK
-            <span class="dswatch" :style="{'background-color': previewColor.rgbaString}"></span>
+            <span class="dswatch" :style="{'background-color': previewColor.rgbString}"></span>
           </b-button>
         </td>
       </tr>
@@ -99,9 +99,10 @@
   import ChannelInput from './ChannelInput.vue';
   import allFormatsPopover from './AllFormatsPopover.vue';
   import VariantSquare from './VariantSquare.vue';
-  import {Color} from '../color.js';
+  import {Color} from 'modern-color';
   import SimpleCanvas from "./SimpleCanvas.vue";
   import hsvv from "./HSVV.vue";
+  import {hueColorStops} from "../color";
   Vue.use(rangeFlyout);
   Vue.use(movable);
   Vue.use(BootstrapVue);
@@ -151,7 +152,7 @@
       hsw(){
         let c = this.previewColor;
         let hsl = this.mode === 'hsl';
-        let hsw = hsl ? c.HSL : c.HSV;
+        let hsw = hsl ? c.hsl : c.hsv;
         hsw.w = hsl ? hsw.l : hsw.v;
         hsw.wl = hsl ? 'Lum' : 'Val';
         return hsw;
@@ -186,7 +187,7 @@
       }
       this.startColor = new Color(this.value);
       this.updateColor(this.value,true);
-      this.hueGradient = Color.hueColorStops();
+      this.hueGradient = hueColorStops;
       this.canRender = true;
       if (this.opt('alpha')){
         this.addAlpha();
