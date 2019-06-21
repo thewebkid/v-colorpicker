@@ -128,7 +128,7 @@
         position:absolute;
         height:42.5px;
         width:8px;
-        top:-10px;
+        top:-9.5px;
         right:-75px;
         border-radius:0 3px 3px 0;
         border:solid .7px #666;
@@ -229,7 +229,7 @@
         border:none;
         outline:none;
         .line{
-          border:solid .7px #ddd;
+          border:solid .7px #aaa;
           //right:-12px;
           .pct{
             border-color:#ddd;

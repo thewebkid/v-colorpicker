@@ -1,7 +1,7 @@
 # v-cpicker (a vue colorpicker) [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![alt text](http://thewebkid.com/colorpicker.png)
-[Live Demo](http://thewebkid.com/cp/)
+![alt text](http://preview.thewebkid.com/img/colorpicker.png)
+[Live Demo](http://preview.thewebkid.com/modules/v-cpicker)
 
 Currently in active development - please file a github issue if you have a bug or request. 
   
@@ -26,95 +26,40 @@ Currently in active development - please file a github issue if you have a bug o
 ### Usage example
 ```html
 <template>
-  <div id="app">
-    <a class="btn btn-light btn-lg" @click="show=!show">
-      <span class="color-pie"></span>
-      <span class="swatch" :style="{'background-color': previewColor.hex}"></span>
-    </a>
-    <color-picker v-if="show" :options="options" class="cp" @preview="preview" @picked="picked" :value="previewColor.hex"/>
+  <div>
+    <div class="float-right picked">
+      Preview <span class="swatch" :style="{background:previewColor.hex}"></span>
+      Picked <span class="swatch" :style="{background:pickedColor.hex}"></span>
+    </div>
+    <colorpicker value="blue" @preview="previewed" @picked="picked"/>
   </div>
 </template>
-
 <script>
 export default {
   data:()=>{
     return {
-      options:{
-        allowModeChange:true,
-        advanced:true,
-        alpha:true,
-        alphaHidden:true,
-        formatsPopup:true,
-        previewBars:true,
-        hslToggle:true
-      },
-      show:false,
-      previewColor: 'fuchsia'
+      pickedColor:null,
+      previewColor:{hex:'blue'}
     }
-  },
-  name: 'app',
-  methods:{
-    picked(){
-      this.show = false;
+  },  
+  methods: {
+    picked(c) {
+      this.pickedColor = c;
     },
-    preview(c){
+    preview(c) {
       this.previewColor = c;
     }
   }
 }
 </script>
-<style lang="scss">  
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 20px;
-.cp{
-  position:absolute;
-  top:55px;
-  left:101px;
-}
-  .color-pie{
-    display: inline-block;
-    vertical-align: middle;
-    height:22px;
-    width:22px;
-    border-radius:50%;
-    box-shadow:0 0 3px #aaa;
-    background: conic-gradient(
-      rgb(61,159,232) 0deg 45deg,
-      rgb(115,18,237) 45deg 90deg,
-      rgb(232,64,115) 90deg 135deg,
-      rgb(185,22,41) 135deg 180deg,
-      rgb(240,65,34) 180deg 225deg,
-      rgb(254,211,55) 225deg 270deg,
-      rgb(83,166,86) 270deg 315deg,
-      rgb(112,218,232) 315deg 360deg
-    );
-    position:relative;
-    &:after{
-      content:'';
-      position:absolute;
-      top:6px;
-      left:6px;
-      background:$light;
-      border-radius: 5px;
-      height:10px;
-      width:10px;
-      box-shadow:inset 0 0 2px #999;
-    }
-  }
-  .swatch{
-    margin-left:5px;
+<style>
+  .swatch {
+    margin-left: 5px;
     display: inline-block;
     vertical-align: middle;
     height: 15px;
-    width:15px;
-    border-radius: 2px;
-    box-shadow:0 0 1px #111, inset 0 0 1px #333;
-    background:white;
+    width: 15px;
   }
-}
 </style>
 
 ```
