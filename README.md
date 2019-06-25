@@ -2,8 +2,6 @@
 
 ![alt text](http://preview.thewebkid.com/img/colorpicker.png)
 [Live Demo](http://preview.thewebkid.com/modules/v-cpicker)
-
-Currently in active development - please file a github issue if you have a bug or request. 
   
 ## Installation
     npm i --save v-cpicker
@@ -64,4 +62,5 @@ export default {
 
 ```
 
-
+#### Disclaimer
+Currently in active development - please file a github issue if you have a bug or request.
