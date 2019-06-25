@@ -65,15 +65,10 @@
         </td>
         <td class="input-col" v-if="advanced" :colspan="opt('allowModeChange') ? 1 : 2">
           <div class="input" style="display: inline-block;margin:-20px -40px 0 -12px;text-align:right" v-if="!opt('compact')">
-            <label class="inline">
-              <a id="popover-strings" style="cursor: pointer;" :style="{visibility:opt('formatsPopup') ? 'visible':'hidden'}">
-              <small>All&nbsp;formats</small>
-            </a></label>
+            <all-formats-popover :color="previewColor" v-if="opt('formatsPopup')"/>
             <input type="text" v-model="hexVal" @change="updateColor(hexVal, true)" class="hex"/>
             <br>
           </div>
-          <all-formats-popover :color="previewColor" v-if="opt('formatsPopup')"/>
-
         </td>
         <td v-else style="vertical-align: top;padding-top:8px;">
           <hsvv :hsv="previewColor.hsv" @hsvvChange="updateColor"/>
