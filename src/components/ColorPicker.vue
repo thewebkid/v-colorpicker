@@ -317,8 +317,6 @@
       max-width:473px;
       margin-right:-12px;
       table-layout: fixed;
-
-
     }
     td.input-col {
       padding-top:12px;
