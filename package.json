@@ -24,7 +24,7 @@
     "url": "https://github.com/thewebkid/v-colorpicker.git"
   },
   "dependencies": {
-    "modern-color": "latest",
+    "modern-color": "^0.1.5",
     "v-movable": "^0.2.10",
     "v-range-flyout": "^0.2.12",
     "vue": "^2.6.10",
@@ -39,7 +39,7 @@
     "core-js": "^2.6.9",
     "postcss": "^7.0.17",
     "rollup-plugin-vue": "^5.0.1",
-    "sass": "^1.22.3",
+    "sass": "^1.22.4",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
