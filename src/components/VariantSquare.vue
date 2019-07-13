@@ -134,7 +134,7 @@ import {Color} from "modern-color";
         width:102px;
       }
       margin:5px -2px 0 -1px;
-      border: solid 1px #777;
+      border: solid 1px #444;
       position:relative;
       &.light{
         border-color:#bbb;

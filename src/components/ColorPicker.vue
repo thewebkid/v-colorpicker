@@ -264,7 +264,10 @@
     color:#eee;
 
     &.light{
-      #okBtn{background:linear-gradient(180deg,  #e7e7e7, #d3d3d3);}
+      #okBtn{
+        background:linear-gradient(180deg,  #e7e7e7, #d3d3d3);
+        border-color:#ccc;
+      }
       background: linear-gradient(180deg, #f7f7f7, #e7e7e7, #e3e3e3);
       color:#111;
       a{
@@ -280,14 +283,18 @@
     box-shadow:0 0 3px #777777;
     border-radius:8px;
     padding:17px 10px 5px 10px;
+    &.compact{
+      padding:13px 6px 1px 6px;
+    }
     #okBtn {
+      background:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.3));
       cursor:pointer;
       position:relative;
       left:-2px;
       margin:0 0px 12px  0;
       box-shadow:0 0 1px #222;
-      padding:6px 10px;
-      border-color:#ccc;
+      padding:6px 10px 6px 20px;
+      border-color:#444;
       .dswatch {
         margin-left:5px;
         position:relative;
@@ -333,7 +340,7 @@
         max-width: 413px;
       }
       td.input-col {
-        width: 128px;
+        width: 101px;
         input[type=text].hex {
           background: linear-gradient(180deg, #fff, #fff);
           color: #111;

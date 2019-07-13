@@ -18,13 +18,13 @@
     },
     computed:{
       scale(){
-        return this.compact ? 1 : 1.25;
+        return this.compact ? 0.844444 : 1.25;
       },
       w(){
-        return this.compact ? 360 : 450;
+        return this.compact ? 304 : 450;
       },
       moveScale(){
-        return this.compact ? 1 : .8;
+        return this.compact ? 1.184210526315789 : .8;
       },
       bg(){
         return new Color({h:this.hsv.h, s:100, v:100}).hex;
@@ -48,7 +48,7 @@
     },
     methods:{
       setHue(x){
-        let hVal = Math.max(0,Math.min(Math.round(x * this.moveScale),360));
+        let hVal = Math.max(0,Math.min(Math.round(x * this.moveScale),359));
         let hsv = Object.assign(this.hsv, {h: hVal});
         this.$emit('hueChange', new Color(hsv));
       },
@@ -68,7 +68,7 @@
     height: 17px;
     width: 450px;
     &.compact{
-      width:360px;
+      width:304px;
     }
     margin:0 0 2px 3px;
     border:solid 1px #777;
