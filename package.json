@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "0.5.1",
+  "version": "1.0.0-beta.4",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": [
@@ -24,9 +24,9 @@
     "url": "https://github.com/thewebkid/v-colorpicker.git"
   },
   "dependencies": {
-    "modern-color": "^0.1.5",
-    "v-movable": "^0.2.10",
-    "v-range-flyout": "^0.2.12",
+    "modern-color": "0.2.0-beta.0",
+    "v-movable": "^0.2.11",
+    "v-range-flyout": "^0.2.13",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.3.0"
   },
