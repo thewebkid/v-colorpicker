@@ -51,7 +51,7 @@ export default {
 ```
 
 ### Output color value
-The v-model can be any css color (it will parse almost anything). Under the hood it uses the modern_color package which will convert the input to a Color instance and expose getters like css, hex, and hsl. You can import the module and set the model as a Color.parse('red') if you prefer.
+The v-model can be any css color (it will parse almost anything). Under the hood it uses the [modern-color](https://www.npmjs.com/package/modern-color) package which will convert the input to a Color instance and expose getters like css, hex, and hsl. You can import the module and set the model as a Color.parse('red') if you prefer.
 
 ### Events
 - **preview**: Fires continuously whenever the preview color is modified.
