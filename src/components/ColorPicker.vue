@@ -196,6 +196,9 @@
       }
     },
     watch:{
+      /*value(v){
+        this.updateColor(v,true)
+      },*/
       options(opts){
         //console.log(opts);
       },
@@ -250,6 +253,7 @@
 
         this.hexVal = this.previewColor.hex;
         Vue.nextTick().then(() => {
+          this.$emit('input', this.previewColor);
           this.$emit('preview', this.previewColor);
         });
       }

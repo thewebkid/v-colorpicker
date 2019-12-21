@@ -1,9 +1,17 @@
 <template>
   <div id="app">
-    <a href="https://www.npmjs.com/package/v-cpicker" rel="nofollow"><img src="https://badge.fury.io/js/v-cpicker.svg"
-                                                                          alt="npm version"></a>
-    <h2>Static colorpicker <span class="swatch" :style="{background:staticColor.hex}"></span></h2>
-    <colorpicker :options="options" :value="[1,23,145,.3]" @preview="staticColorPreview"/>
+    <a href="https://www.npmjs.com/package/v-cpicker" rel="nofollow">
+      <img src="https://badge.fury.io/js/v-cpicker.svg" alt="npm version">
+    </a>
+    <h2>Static colorpicker <span class="swatch" :style="{background:modelColor.css}"></span></h2>
+    <div style="width:1000px">
+      <ul class="float-right">
+        <li v-for="f in modelFormats" :key="f">
+          <strong>modelColor.{{f}}</strong>: {{modelColor[f]}}
+        </li>
+      </ul>
+      <colorpicker :options="options" v-model="modelColor"/>
+    </div>
     <b-form-checkbox v-model="options.compact">
       Compact mode
     </b-form-checkbox>
@@ -19,12 +27,7 @@
     <b-form-checkbox v-model="options.previewBars" v-if="options.advanced || options.allowModeChange">
       Preview Gradient Bars next to channel values
     </b-form-checkbox>
-    <b-form-checkbox v-model="options.alpha" v-if="options.advanced || options.allowModeChange">
-      Enable alpha channel
-    </b-form-checkbox>
-    <b-form-checkbox v-model="options.alphaHidden" v-if="options.advanced || options.allowModeChange">
-      Hide link to enable alpha on ui
-    </b-form-checkbox>
+
     <b-form-checkbox v-model="options.formatsPopup" v-if="options.advanced || options.allowModeChange">
       Show link to all formats
     </b-form-checkbox>
@@ -35,9 +38,9 @@
     <h2>Colorpicker as flyout</h2>
     <a class="btn btn-light btn-lg" @click="show=!show">
       <span class="color-pie"></span>
-      <span class="swatch" :style="{'background-color': previewColor}"></span>
+      <span class="swatch" :style="{'background-color': flyoutColor.css}"></span>
     </a>
-    <colorpicker v-if="show" class="cp" @preview="preview" @picked="picked" value="fuchsia"/>
+    <colorpicker v-if="show" class="cp" v-model="flyoutColor"/>
 
   </div>
 
@@ -45,43 +48,28 @@
 
 <script>
   import colorpicker from './components/ColorPicker.vue';
-  import {Color,namedColors} from "modern-color";
+  import { Color } from 'modern-color';
 
   export default {
     data: () => {
       return {
+        modelFormats:['rgbaString','hex','hslaString','cmykaString','hsv'],
+        modelColor:'aqua',
         options: {
           sticky:true,
           compact:true,
           light: true,
           allowModeChange: true,
           advanced: true,
-          alpha: true,
-          alphaHidden: false,
           formatsPopup: true,
           previewBars: true,
           hslToggle: true
         },
         show: false,
-        previewColor: 'fuchsia',
-        staticColor:{
-          hex:'#191943'
-        }
+        flyoutColor: new Color('fuchsia')
       }
     },
     name: 'app',
-    methods: {
-      picked() {
-        console.log(Color.fromHex('#fff'));
-        this.show = false;
-      },
-      preview(c) {
-        this.previewColor = c.hex;
-      },
-      staticColorPreview(c) {
-        this.staticColor = c;
-      }
-    },
     components: {
       colorpicker
     }

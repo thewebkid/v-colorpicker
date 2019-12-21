@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "1.0.4",
+  "version": "1.1.1",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": [
@@ -11,7 +11,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "bili --name index --plugin vue --vue.css false",
+    "build": "bili",
     "serve": "vue-cli-service serve",
     "build2": "vue-cli-service build"
   },
@@ -24,24 +24,26 @@
     "url": "https://github.com/thewebkid/v-colorpicker.git"
   },
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "bootstrap-vue": "^2.0.3",
-    "modern-color": "^0.3.1",
-    "rollup-plugin-vue": "^5.0.1",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.1.0",
+    "modern-color": "^1.0.0",
+    "rollup-plugin-vue": "^5.1.4",
     "v-movable": "^0.2.11",
-    "v-range-flyout": "^0.2.13",
-    "vue": "^2.6.10",
-    "vue-clipboard2": "^0.3.0",
-    "vue-template-compiler": "^2.5.21"
+    "v-range-flyout": "^1.0.1",
+    "vue": "^2.6.11",
+    "vue-clipboard2": "^0.3.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.9.2",
-    "@vue/cli-service": "^3.9.2",
-    "bili": "^4.8.0",
-    "core-js": "^2.6.9",
-    "postcss": "^7.0.17",
-    "sass": "^1.22.4",
-    "sass-loader": "^7.1.0"
+    "@vue/cli-plugin-babel": "^4.1.1",
+    "@vue/cli-service": "^4.1.1",
+    "bili": "^4.8.1",
+    "core-js": "^3.6.0",
+    "postcss": "^7.0.25",
+    "rollup-plugin-vue": "^5.0.0",
+    "sass": "^1.24.0",
+    "sass-loader": "^8.0.0",
+    "vue-runtime-helpers": "^1.1.2",
+    "vue-template-compiler": "^2.6.11"
   },
   "postcss": {
     "plugins": {

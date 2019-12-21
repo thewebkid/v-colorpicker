@@ -1,13 +1,13 @@
 <template>
-  <div class="input" v-if="v!==null" :class="{light,compact}">
-    <label class="inline" :style="{fontWeight:activeRF?900:100}">
-      <span class="line" :style="{background:bg}" v-if="previewBars">
-        <span class="pct" :style="{top:(pct*100)+'%'}"></span>
+  <div class="input" v-if="value !== null" :class="{light, compact}">
+    <label class="inline" :style="{fontWeight: activeRF ? 900 : 100}">
+      <span class="line" :style="{background: bg}" v-if="previewBars">
+        <span class="pct" :style="{top: (pct * 100) + '%'}"></span>
       </span>
       {{compact ? lbl.charAt(0) : lbl}}
     </label>
     <range-flyout
-        :min="0" :max="max" :incr="incr" :val="v"
+        :min="0" :max="max" :incr="incr" v-model="value"
         :sliderHeight="h"  :slideBackground="bg" :handle-bg="colorBase.hex"
         @change="changed" @active="isActive"
     />
@@ -25,7 +25,7 @@
         cb:null,
         bg:{},
         colorBase:null,
-        v:null,
+        value:null,
         hide:false,
         isInit:true,
         incr:1,
@@ -53,17 +53,17 @@
       }
       const vm = this;
       this.init();
+      this.changed(this.value);
       setTimeout(()=>{
         Vue.nextTick().then(()=>vm.isInit=false);
       },123)
     },
     watch:{
       previewColor(){
-        //console.log(this.chan,'pv');
         this.init();
+
       },
       baseColor(){
-        //console.log(this.chan,'bc');
         this.init();
       }
     },
@@ -72,11 +72,10 @@
         this.activeRF = act;
       },
       init(){
-        //console.log(this.$parent.options);
         this.chan = this.lbl.charAt(0).toLowerCase();
         this.colorBase = this.baseColor||this.previewColor;
-        this.v = this.previewColor[this.chan];
-        if (this.chan === 'a' && this.v === undefined){
+        this.value = this.previewColor[this.chan];
+        if (this.chan === 'a' && this.value === undefined){
           this.$emit('channel-change',{c:this.chan,v:1});
         }
         this.slideBg();
