@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "1.1.3-beta.0",
+  "version": "1.1.4",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": [
@@ -28,7 +28,7 @@
     "bootstrap-vue": "^2.1.0",
     "modern-color": "^1.0.0",
     "rollup-plugin-vue": "^5.1.4",
-    "v-movable": "^0.2.11",
+    "v-movable": "^0.3.0",
     "v-range-flyout": "^1.0.2-beta.0",
     "vue": "^2.6.11",
     "vue-clipboard2": "^0.3.1"

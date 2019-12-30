@@ -10,7 +10,7 @@
           <strong>modelColor.{{f}}</strong>: {{modelColor[f]}}
         </li>
       </ul>
-      <colorpicker :options="options" v-model="modelColor" :debug="false"/>
+      <colorpicker :options="options" v-model="modelColor"/>
     </div>
     <b-form-checkbox v-model="options.compact">
       Compact mode
