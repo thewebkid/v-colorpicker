@@ -10,7 +10,7 @@
           <strong>modelColor.{{f}}</strong>: {{modelColor[f]}}
         </li>
       </ul>
-      <colorpicker :options="options" v-model="modelColor"/>
+      <colorpicker :options="options" v-model="modelColor" :debug="false"/>
     </div>
     <b-form-checkbox v-model="options.compact">
       Compact mode
@@ -27,7 +27,6 @@
     <b-form-checkbox v-model="options.previewBars" v-if="options.advanced || options.allowModeChange">
       Preview Gradient Bars next to channel values
     </b-form-checkbox>
-
     <b-form-checkbox v-model="options.formatsPopup" v-if="options.advanced || options.allowModeChange">
       Show link to all formats
     </b-form-checkbox>

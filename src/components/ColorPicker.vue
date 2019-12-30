@@ -8,21 +8,21 @@
       <tr v-if="advanced">
         <td class="input-col">
           <ChannelInput v-for="(l,i) in rgbLabels" :key="i" :lbl="l" :max="255" :h="128" :preview-color="previewColor"
-                        @channel-change="channelChange"/>
+                        @channel-change="channelChange" :debug="isDebug"/>
 
           <template v-if="!opt('alphaHidden')">
             <ChannelInput v-if="opt('compact') || previewColor.a !== undefined" lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
-                          @channel-change="channelChange"/>
+                          @channel-change="channelChange" :debug="isDebug"/>
             <a v-else @click="addAlpha" style="margin-top:19px;display: block;cursor: pointer">+ Alpha</a>
           </template>
         </td>
         <td class="input-col" v-if="hsw && hsw.wl">
           <ChannelInput lbl="Hue" :max="359" :h="180" :preview-color="hsw" :base-color="previewColor"
-                        @channel-change="channelChange"/>
+                        @channel-change="channelChange" :debug="isDebug"/>
           <ChannelInput lbl="Sat" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
-                        @channel-change="channelChange"/>
+                        @channel-change="channelChange" :debug="isDebug"/>
           <ChannelInput :lbl="hsw.wl" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
-                        @channel-change="channelChange"/>
+                        @channel-change="channelChange" :debug="isDebug"/>
 
           <div class="mt-3" style="text-align: right;padding-right:13px;font-size:13px" v-if="opt('hslToggle') && !opt('compact')">
             <b-button-group size="sm" style="font-size: 0.75rem;">
@@ -151,12 +151,15 @@
         hsw.w = hsl ? hsw.l : hsw.v;
         hsw.wl = hsl ? 'Lum' : 'Val';
         return hsw;
+      },
+      isDebug(){
+        return this.debug === undefined ? debug() : this.debug;
       }
     },
     components: {Hue, SimpleCanvas, ChannelInput, allFormatsPopover, VariantSquare, hsvv},
     name: 'ColorPicker',
     props: [
-      'value','options'
+      'value','options','debug'
     ],
     created(){
 

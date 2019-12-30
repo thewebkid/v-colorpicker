@@ -9,7 +9,7 @@
     <range-flyout
         :min="0" :max="max" :incr="incr" v-model="value"
         :sliderHeight="h"  :slideBackground="bg" :handle-bg="colorBase.hex"
-        @change="changed" @active="isActive"
+        @change="changed" @active="isActive" :sticky="debug"
     />
   </div>
 </template>
@@ -44,9 +44,8 @@
         return this.$parent.opt('light')
       }
     },
-
     name: 'ChannelInput',
-    props:['lbl','max','h','previewColor','baseColor','incrementVal'],
+    props:['lbl','max','h','previewColor','baseColor','incrementVal','debug'],
     mounted(){
       if (this.incrementVal){
         this.incr=this.incrementVal;
