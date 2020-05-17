@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": [
@@ -30,7 +30,8 @@
     "v-movable": "0.2.11",
     "v-range-flyout": "^1.0.7",
     "vue": "^2.6.11",
-    "vue-clipboard2": "^0.3.1"
+    "vue-clipboard2": "^0.3.1",
+    "vue-runtime-helpers": "^1.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.1",
@@ -41,7 +42,6 @@
     "rollup-plugin-vue": "^5.1.7",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
-    "vue-runtime-helpers": "^1.1.2",
     "vue-template-compiler": "^2.6.11"
   },
   "postcss": {
