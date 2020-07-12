@@ -19,14 +19,19 @@
 - **formatsPopup**: (_default=true_) Show link to all formats
 - **hslToggle**: (_default=true_) Show HSL/HSV toggle
 
+### Events
+- **preview**: Fires continuously whenever the preview color is modified.
+- **picked**: Fires when the user clicks ok.
+
 ### Usage example
 ```html
 <template>
   <div>
     <div class="float-right picked">
-      Preview <span class="swatch" :style="{background:modelColor.css}"></span>
+      Preview <span class="swatch" :style="{background:modelColor.css}"></span> ({{modelColor}})
     </div>
     <colorpicker v-model="modelColor" />
+
   </div>
 </template>
 <script>
@@ -50,12 +55,10 @@ export default {
 
 ```
 
-### Output color value
+### Note on input / output color
 The v-model can be any css color (it will parse almost anything). Under the hood it uses the [modern-color](https://www.npmjs.com/package/modern-color) package which will convert the input to a Color instance and expose getters like css, hex, and hsl. You can import the module and set the model as a Color.parse('red') if you prefer.
 
-### Events
-- **preview**: Fires continuously whenever the preview color is modified.
-- **picked**: Fires when the user clicks ok.
+Also note that the color returned can be type-coerced into its rgba(r,g,b,a) css string, but it can also be used as a color object and mutated or output in various formats. [Documentation](https://www.npmjs.com/package/modern-color).
 
 ### Disclaimer
 I have not written a turn-key solution for a flyout version bound to a color input or another element. I welcome pull requests from someone who wants to write an implementation similar to how bootstrap-vue.js handles popovers and the various placement options.

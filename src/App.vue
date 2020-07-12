@@ -40,7 +40,7 @@
       <span class="swatch" :style="{'background-color': flyoutColor.css}"></span>
     </a>
     <colorpicker v-if="show" class="cp" v-model="flyoutColor"/>
-
+{{flyoutColor}}
   </div>
 
 </template>
@@ -56,7 +56,7 @@
         modelColor:'aqua',
         options: {
           sticky:true,
-          compact:true,
+          compact:false,
           light: true,
           allowModeChange: true,
           advanced: true,
