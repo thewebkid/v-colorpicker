@@ -1,6 +1,6 @@
 {
   "name": "v-cpicker",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "private": false,
   "author": "Ron Gilchrist (thewebkid)",
   "keywords": [
@@ -24,19 +24,19 @@
     "url": "https://github.com/thewebkid/v-colorpicker.git"
   },
   "dependencies": {
-    "bootstrap": "^4.5.0",
-    "bootstrap-vue": "^2.15.0",
+    "bootstrap": "^4.5.2",
+    "bootstrap-vue": "^2.16.0",
     "modern-color": "^1.0.0",
     "rollup-plugin-vue": "^5.1.9",
-    "v-movable": "^0.3.1",
-    "v-range-flyout": "^1.0.10",
+    "v-movable": "^0.3.2",
+    "v-range-flyout": "^1.0.11",
     "vue": "^2.6.11",
     "vue-clipboard2": "^0.3.1",
     "vue-runtime-helpers": "^1.1.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.6",
-    "@vue/cli-service": "^4.4.6",
+    "@vue/cli-plugin-babel": "^4.5.3",
+    "@vue/cli-service": "^4.5.3",
     "bili": "^4.10.1",
     "core-js": "^3.6.5",
     "postcss": "^7.0.32",
