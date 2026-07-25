@@ -1,366 +1,601 @@
 <template>
-  <div  class="colorpicker-wrap" :class="{light:opt('light'),compact:opt('compact')}">
+  <div class="colorpicker-wrap" :class="{ light: opt('light'), compact: opt('compact') }">
     <div class="top" v-if="advanced">
-      <Hue :hsv="previewColor.hsv" @hueChange="updateColor"/>
+      <HueBar
+        :hue="hsw.h"
+        :color="color"
+        :compact="opt('compact')"
+        @hue-change="setHue"
+      />
     </div>
-    <table :style="{marginBottom: !advanced ? '-9px' : 0}">
-      <tbody>
-      <tr v-if="advanced">
-        <td class="input-col">
-          <ChannelInput v-for="(l,i) in rgbLabels" :key="i" :lbl="l" :max="255" :h="128" :preview-color="previewColor"
-                        @channel-change="channelChange" :debug="isDebug"/>
 
-          <template v-if="!opt('alphaHidden')">
-            <ChannelInput v-if="opt('compact') || previewColor.a !== undefined" lbl="Alpha" :max="1" :incrementVal=".01" :h="100" :preview-color="previewColor" :base-color="previewColor"
-                          @channel-change="channelChange" :debug="isDebug"/>
-            <a v-else @click="addAlpha" style="margin-top:19px;display: block;cursor: pointer">+ Alpha</a>
-          </template>
-        </td>
-        <td class="input-col" v-if="hsw && hsw.wl">
-          <ChannelInput lbl="Hue" :max="359" :h="180" :preview-color="hsw" :base-color="previewColor"
-                        @channel-change="channelChange" :debug="isDebug"/>
-          <ChannelInput lbl="Sat" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
-                        @channel-change="channelChange" :debug="isDebug"/>
-          <ChannelInput :lbl="hsw.wl" :max="100" :h="100" :preview-color="hsw" :base-color="previewColor"
-                        @channel-change="channelChange" :debug="isDebug"/>
+    <div class="picker-body" :class="{ 'simple-mode': !advanced }">
+      <!-- Advanced mode -->
+      <template v-if="advanced">
+        <div class="channels-row">
+          <div class="input-col">
+            <ChannelInput
+              v-for="label in rgbLabels"
+              :key="label"
+              :lbl="label"
+              :channel="label.charAt(0).toLowerCase()"
+              :max="255"
+              :h="128"
+              :color="color"
+              :hsx="hsx"
+              :compact="opt('compact')"
+              :light="opt('light')"
+              :preview-bars="opt('previewBars')"
+              @channel-change="onChannelChange"
+            />
 
-          <div class="mt-3" style="text-align: right;padding-right:13px;font-size:13px" v-if="opt('hslToggle') && !opt('compact')">
-            <b-button-group size="sm" style="font-size: 0.75rem;">
-              <b-button  :variant="mode==='hsl'?'success':''" @click="mode='hsl'">HSL</b-button>
-              <b-button  :variant="mode==='hsv'?'success':''" @click="mode='hsv'">HSV</b-button>
-            </b-button-group>
+            <template v-if="!opt('alphaHidden')">
+              <ChannelInput
+                v-if="opt('compact') || color.alpha !== undefined"
+                lbl="Alpha"
+                channel="a"
+                :max="1"
+                :increment-val="0.01"
+                :h="100"
+                :color="color"
+                :hsx="hsx"
+                :compact="opt('compact')"
+                :light="opt('light')"
+                :preview-bars="opt('previewBars')"
+                @channel-change="onChannelChange"
+              />
+              <a v-else @click="addAlpha" class="add-alpha-link">+ Alpha</a>
+            </template>
           </div>
-          <div class="input" :class="{light:opt('light'),compact:opt('compact')}" v-if="opt('compact')">
-            <input type="text" v-model="hexVal" @change="updateColor(hexVal, true)" class="hex"/>
-          </div>
-        </td>
-        <td class="variant-square">
-          <variant-square v-if="canRender" :hsw="hsw" :isHsl="mode==='hsl'" :light="opt('light')" @variantchange="updateColor"/>
-          <div style="text-align: right;padding:5px 0px;font-size:13px" v-if="opt('hslToggle') && opt('compact')">
-            <b-button-group size="sm" style="font-size: 0.75rem;">
-              <b-button  :variant="mode==='hsl'?'success':''" @click="mode='hsl'">HSL</b-button>
-              <b-button  :variant="mode==='hsv'?'success':''" @click="mode='hsv'">HSV</b-button>
-            </b-button-group>
-          </div>
-        </td>
-      </tr>
-      <tr v-else>
-        <td colspan="3">
-          <SimpleCanvas v-if="canRender" :hsv="previewColor.hsv" @variantchange="updateColor"/>
-        </td>
-      </tr>
-      <tr v-if="advanced && !opt('compact')">
-        <td colspan="3">
-          <hr>
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align: top;padding-top:8px;" v-if="opt('allowModeChange')">
-          <b-form-checkbox
-            v-model="advanced"
-            name="checkbox-adv">
-            Advanced
-          </b-form-checkbox>
 
-        </td>
-        <td class="input-col" v-if="advanced" :colspan="opt('allowModeChange') ? 1 : 2">
-          <div class="input" style="display: inline-block;margin:-20px -40px 0 -12px;text-align:right" v-if="!opt('compact')">
-            <all-formats-popover :color="previewColor" v-if="opt('formatsPopup')"/>
-            <input type="text" v-model="hexVal" @change="updateColor(hexVal, true)" class="hex"/>
-            <br>
+          <div class="input-col" v-if="hsw">
+            <ChannelInput
+              lbl="Hue"
+              channel="h"
+              :max="359"
+              :h="180"
+              :color="color"
+              :hsx="hsx"
+              :compact="opt('compact')"
+              :light="opt('light')"
+              :preview-bars="opt('previewBars')"
+              @channel-change="onChannelChange"
+            />
+            <ChannelInput
+              lbl="Sat"
+              channel="s"
+              :max="100"
+              :h="100"
+              :color="color"
+              :hsx="hsx"
+              :compact="opt('compact')"
+              :light="opt('light')"
+              :preview-bars="opt('previewBars')"
+              @channel-change="onChannelChange"
+            />
+            <ChannelInput
+              :lbl="hsw.wl"
+              :channel="isHsl ? 'l' : 'v'"
+              :max="100"
+              :h="100"
+              :color="color"
+              :hsx="hsx"
+              :compact="opt('compact')"
+              :light="opt('light')"
+              :preview-bars="opt('previewBars')"
+              @channel-change="onChannelChange"
+            />
+
+            <div class="hsl-toggle" v-if="opt('hslToggle') && !opt('compact')">
+              <div class="btn-group">
+                <button :class="{ active: mode === 'hsl' }" @click="mode = 'hsl'">HSL</button>
+                <button :class="{ active: mode === 'hsv' }" @click="mode = 'hsv'">HSV</button>
+              </div>
+            </div>
+
+            <div class="hex-input-compact" v-if="opt('compact')">
+              <input
+                type="text"
+                v-model="hexVal"
+                @change="onHexChange"
+                class="hex"
+                placeholder="#000000"
+              />
+            </div>
           </div>
-        </td>
-        <td v-else style="vertical-align: top;padding-top:8px;">
-          <hsvv :hsv="previewColor.hsv" @hsvvChange="updateColor"/>
-        </td>
-        <td style="padding-top:1px">
-          <b-button size="sm" id="okBtn" class="btn-outline float-right" :variant="opt('light') ? 'light':'dark'" @click="$emit('picked',previewColor)" :style="{marginRight: !advanced ? '7px' : '15px'}">
+
+          <div class="variant-col">
+            <VariantSquare
+              :color="color"
+              :hsx="hsx"
+              :is-hsl="isHsl"
+              :size="opt('compact') ? 100 : 160"
+              :light="opt('light')"
+              @variant-change="onVariantChange"
+            />
+            <div class="hsl-toggle-compact" v-if="opt('hslToggle') && opt('compact')">
+              <div class="btn-group">
+                <button :class="{ active: mode === 'hsl' }" @click="mode = 'hsl'">HSL</button>
+                <button :class="{ active: mode === 'hsv' }" @click="mode = 'hsv'">HSV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr v-if="!opt('compact')" />
+      </template>
+
+      <!-- Simple mode -->
+      <template v-else>
+        <div class="simple-canvas-row">
+          <SimpleCanvas
+            :color="color"
+            :compact="opt('compact')"
+            @variant-change="onVariantChange"
+          />
+        </div>
+      </template>
+
+      <!-- Bottom row -->
+      <div class="bottom-row">
+        <div class="mode-checkbox" v-if="opt('allowModeChange')">
+          <label class="checkbox-label">
+            <input type="checkbox" v-model="advanced" />
+            <span>Advanced</span>
+          </label>
+        </div>
+
+        <div class="hex-section" v-if="advanced">
+          <div class="hex-input" v-if="!opt('compact')">
+            <AllFormatsPopover :color="color" v-if="opt('formatsPopup')" />
+            <input
+              type="text"
+              v-model="hexVal"
+              @change="onHexChange"
+              class="hex"
+              placeholder="#000000"
+            />
+          </div>
+        </div>
+
+        <div class="value-slider" v-else>
+          <ValueSlider
+            :color="color"
+            :compact="opt('compact')"
+            @value-change="onValueChange"
+          />
+        </div>
+
+        <div class="ok-section">
+          <button class="ok-btn" :class="{ light: opt('light') }" @click="pickColor">
             OK
-            <span class="dswatch" :style="{'background-color': previewColor.rgbString}"></span>
-          </b-button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+            <span class="swatch" :style="{ backgroundColor: color.rgbString }"></span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-  import Vue from 'vue';
-  import BootstrapVue from 'bootstrap-vue'
-  import movable from 'v-movable';
-  import rangeFlyout from 'v-range-flyout';
-  import Hue from './Hue.vue';
-  import ChannelInput from './ChannelInput.vue';
-  import allFormatsPopover from './AllFormatsPopover.vue';
-  import VariantSquare from './VariantSquare.vue';
-  import {Color} from 'modern-color';
-  import SimpleCanvas from "./SimpleCanvas.vue";
-  import hsvv from "./HSVV.vue";
-  import {hueColorStops} from "../color";
-  Vue.use(rangeFlyout);
-  Vue.use(movable);
-  Vue.use(BootstrapVue);
-  const debug = ()=>window._debugColorPicker === true;
-  const rgb = 'rgb';
-  const isHsl = c => rgb.indexOf(c) === -1;
+<script setup>
+import { ref, computed, watch } from 'vue';
+import { Color } from 'modern-color';
+import { useColorState } from '../composables/useColorState.js';
+import HueBar from './HueBar.vue';
+import ChannelInput from './ChannelInput.vue';
+import VariantSquare from './VariantSquare.vue';
+import SimpleCanvas from './SimpleCanvas.vue';
+import ValueSlider from './ValueSlider.vue';
+import AllFormatsPopover from './AllFormatsPopover.vue';
 
-  export default {
-    data: () => {
-      return {
-        startColor: new Color(),
-        previewColor: new Color(),
-        hexVal:'',
-        rgbLabels: ['Red', 'Green', 'Blue'],
-        canRender: false,
-        ctx:null,
-        bouncer:null,
-        mode:'',
-        hueGradient:'',
-        savedState:{},
-        advanced:true,
-        alphaChannel:1,
-        defaultOptions:{
-          sticky:true,
-          compact:false,
-          light:false,
-          allowModeChange:true,
-          advanced:false,
-          alpha:undefined,
-          alphaHidden:false,
-          formatsPopup:true,
-          previewBars:true,
-          hslToggle:true
-        }
-      }
-    },
-    computed:{
-      opt(){
-        return optionString => {
-          if (!this.options || this.options[optionString]===undefined){
-            return this.defaultOptions[optionString];
-          }else{
-            return this.options[optionString];
-          }
-        }
-      },
-      hsw(){
-        let c = this.previewColor;
-        let hsl = this.mode === 'hsl';
-        let hsw = hsl ? c.hsl : c.hsv;
-        hsw.w = hsl ? hsw.l : hsw.v;
-        hsw.wl = hsl ? 'Lum' : 'Val';
-        return hsw;
-      },
-      isDebug(){
-        return this.debug === undefined ? debug() : this.debug;
-      }
-    },
-    components: {Hue, SimpleCanvas, ChannelInput, allFormatsPopover, VariantSquare, hsvv},
-    name: 'ColorPicker',
-    props: [
-      'value','options','debug'
-    ],
-    created(){
-
-    },
-    mounted() {
-      const vm = this;
-      let savedState = localStorage.getItem('v-cpicker');
-      if (savedState){
-        savedState = this.savedState = JSON.parse(savedState);
-
-        if (!savedState.mode){
-          this.savedState.mode = 'hsl';
-        }
-        this.advanced = savedState.advanced;
-        this.mode = savedState.mode;
-      }else {
-        this.advanced = this.options && this.options.advanced === true;
-        this.savedState = {
-          advanced:this.advanced,
-          mode:'hsl'
-        };
-        localStorage.setItem('v-cpicker', JSON.stringify(this.savedState))
-      }
-      this.startColor = new Color(this.value);
-      this.updateColor(this.value,true);
-      this.hueGradient = hueColorStops;
-      this.canRender = true;
-      if (this.opt('alpha')){
-        this.addAlpha();
-      }
-      Vue.nextTick().then(() => {
-        vm.mode = this.savedState.mode;
-      });
-      if(debug()){
-        console.log(`**********colorpicker debug (mounted)***********`);
-        console.log({startColor:this.startColor,value:this.value,previewColor:this.previewColor})
-      }
-    },
-    watch:{
-      /*value(v){
-        this.updateColor(v,true)
-      },*/
-      options(opts){
-        //console.log(opts);
-      },
-      advanced(flag){
-        this.savedState.advanced = flag;
-        localStorage.setItem('v-cpicker', JSON.stringify(this.savedState));
-        console.log(flag)
-      },
-      mode(m){
-        this.savedState.mode = m;
-        localStorage.setItem('v-cpicker', JSON.stringify(this.savedState))
-      },
-      enableAlpha(enable){
-        if (enable){
-          this.addAlpha();
-        }else{
-          this.updateColor(this.previewColor.hex, true);
-        }
-      }
-    },
-    methods: {
-      addAlpha(){
-        if (this.previewColor.a === undefined) {
-          this.updateColor(new Color(Object.assign(this.previewColor.rgbObj, {a: 1})));
-        }
-      },
-      channelChange({c, v}) {
-        const vm = this;
-        if (c ==='a'){
-          this.alphaChannel = v;
-        }
-        if (isHsl(c)) {
-          let hsw = this.hsw;
-          hsw[c] = v;
-          let updatedColor = new Color(hsw);
-          vm.updateColor(updatedColor);
-        } else {
-          let rgb = vm.previewColor.rgbObj;
-          rgb[c] = v;
-          vm.updateColor(new Color(rgb));
-        }
-      },
-      updateColor(updatedColor,construct){
-        if (construct===true || updatedColor.constructor.name !== 'Color'){
-          updatedColor = new Color(updatedColor);
-          if (updatedColor.a !== undefined){
-            this.alphaChannel = updatedColor.a;
-          }
-        }
-        updatedColor.a = this.alphaChannel;
-        this.previewColor = updatedColor;
-
-        this.hexVal = this.previewColor.hex;
-        Vue.nextTick().then(() => {
-          this.$emit('input', this.previewColor);
-          this.$emit('preview', this.previewColor);
-        });
-      }
-    }
+const props = defineProps({
+  modelValue: {
+    type: [String, Object],
+    default: '#4682B4'
+  },
+  options: {
+    type: Object,
+    default: () => ({})
+  },
+  debug: {
+    type: Boolean,
+    default: undefined
   }
+});
+
+const emit = defineEmits(['update:modelValue', 'preview', 'picked']);
+
+const defaultOptions = {
+  sticky: true,
+  compact: false,
+  light: false,
+  allowModeChange: true,
+  advanced: false,
+  alpha: undefined,
+  alphaHidden: false,
+  formatsPopup: true,
+  previewBars: true,
+  hslToggle: true
+};
+
+const opt = (optionString) => {
+  if (!props.options || props.options[optionString] === undefined) {
+    return defaultOptions[optionString];
+  }
+  return props.options[optionString];
+};
+
+// Use color state composable
+const {
+  model,
+  mode,
+  advanced,
+  color,
+  hsx,
+  isHsl,
+  hsw,
+  setHue,
+  onColorIntent,
+  setColorFromInput,
+  pickColor
+} = useColorState(
+  computed(() => props.modelValue),
+  computed(() => props.options),
+  emit
+);
+
+// Local state
+const hexVal = ref('');
+const rgbLabels = ['Red', 'Green', 'Blue'];
+
+// Sync hex value with color
+watch(color, (newColor) => {
+  hexVal.value = newColor.hex;
+}, { immediate: true });
+
+// Channel change handler
+const onChannelChange = ({ channel, value }) => {
+  const currentColor = color.value;
+
+  if (['r', 'g', 'b', 'a'].includes(channel)) {
+    // RGB or Alpha channel
+    const rgbObj = { ...currentColor.rgbObj, [channel]: value };
+    const newColor = new Color(rgbObj);
+    onColorIntent({
+      color: newColor,
+      source: 'channel',
+      hsx: null
+    });
+  } else {
+    // HSL/HSV channel
+    const base = hsx.value ?? (isHsl.value ? currentColor.hsl : currentColor.hsv);
+    const newHsx = { ...base, [channel]: value };
+    const newColor = isHsl.value ? Color.fromHsl(newHsx) : Color.fromHsv(newHsx);
+    newColor.a = currentColor.alpha;
+
+    onColorIntent({
+      color: newColor,
+      source: 'channel',
+      hsx: newHsx,
+      space: mode.value
+    });
+  }
+};
+
+// Variant square change handler
+const onVariantChange = ({ color: newColor, hsx: newHsx }) => {
+  newColor.a = color.value.alpha;
+  onColorIntent({
+    color: newColor,
+    source: 'canvas',
+    hsx: newHsx,
+    space: mode.value
+  });
+};
+
+// Value slider change handler (simple mode)
+const onValueChange = (v) => {
+  const hsv = { ...color.value.hsv, v };
+  const newColor = Color.fromHsv(hsv);
+  newColor.a = color.value.alpha;
+
+  onColorIntent({
+    color: newColor,
+    source: 'simple',
+    hsx: hsv,
+    space: 'hsv'
+  });
+};
+
+// Hex input change
+const onHexChange = () => {
+  setColorFromInput(hexVal.value);
+};
+
+// Add alpha channel
+const addAlpha = () => {
+  if (color.value.alpha === undefined || color.value.alpha === 1) {
+    const rgbObj = { ...color.value.rgbObj, a: 1 };
+    const newColor = new Color(rgbObj);
+    onColorIntent({
+      color: newColor,
+      source: 'input',
+      hsx: null
+    });
+  }
+};
+
+// Initialize alpha if needed
+if (opt('alpha')) {
+  addAlpha();
+}
 </script>
-<style lang="scss" scoped>
-  @import "../scss/shared";
-  .colorpicker-wrap {
-    display:inline-block;
-    background: linear-gradient(180deg, #444, #222, #111, #000);
-    color:#eee;
 
-    &.light{
-      #okBtn{
-        background:linear-gradient(180deg,  #e7e7e7, #d3d3d3);
-        border-color:#ccc;
-      }
-      background: linear-gradient(180deg, #f7f7f7, #e7e7e7, #e3e3e3);
-      color:#111;
-      a{
-        color:#007bff;
-        &:hover{
-          color:darken(#007bff, 15%);
-        }
-      }
-      hr {
-        border-color: #ccc;
-      }
-    }
-    box-shadow:0 0 3px #777777;
-    border-radius:8px;
-    padding:17px 10px 5px 10px;
-    &.compact{
-      padding:13px 6px 1px 6px;
-    }
-    #okBtn {
-      background:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.3));
-      cursor:pointer;
-      position:relative;
-      left:-2px;
-      margin:0 0px 12px  0;
-      box-shadow:0 0 1px #222;
-      padding:6px 10px 6px 20px;
-      border-color:#444;
-      .dswatch {
-        margin-left:5px;
-        position:relative;
-        top:2px;
-        display: inline-block;
-        height: 15px;
-        width: 15px;
-        border-radius: 2px;
-        box-shadow: 0 0 1px #fff, inset 0 0 1px #eee;
-        background: white;
-      }
-    }
-    hr{
-     border-color:#555;
-     margin-left:-7px;
-     position:relative;
-     left:-3px;
-   }
-    table{
-      max-width:473px;
-      margin-right:-12px;
-      table-layout: fixed;
-    }
-    td.input-col {
-      padding-top:12px;
-      vertical-align: top;
-      width: 144px;
-      margin-right:-4px;
-      overflow: visible;
-    }
-    td.variant-square {
-      vertical-align: top;
-      width: 180px;
-      padding: 12px 16px 0 4px;
-    }
-    &.compact{
-      hr{
-        margin:3px 0 -3px -7px
-      }
-      table {
-        max-width: 413px;
-      }
-      td.input-col {
-        width: 101px;
-        input[type=text].hex {
-          background: linear-gradient(180deg, #fff, #fff);
-          color: #111;
-          top:37px;
-          left:7px;
-          &:active,&:focus{
-            outline: none;
-            border:1px solid #4D90FE;
-            box-shadow: 0px 0px 5px  #4D90FE;
-          }
-        }
-      }
-      td.variant-square{
-        width:120px;
+<style lang="scss" scoped>
+.colorpicker-wrap {
+  /* Themeable CSS custom properties — override any of these on the component
+     or an ancestor to re-skin the picker. */
+  --vcp-bg: linear-gradient(180deg, #444, #222, #111, #000);
+  --vcp-text: #eee;
+  --vcp-border-color: #444;
+  --vcp-box-shadow: 0 0 3px #777777;
+  --vcp-input-bg: linear-gradient(180deg, #111, #000);
+  --vcp-input-color: #eee;
+  --vcp-input-border: #777;
+  --vcp-input-focus-border: #fff;
+  --vcp-input-focus-shadow: #fff;
+  --vcp-link-color: #6cf;
+  --vcp-accent: #28a745;
+  --vcp-accent-text: #fff;
+  --vcp-btn-bg: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+  --vcp-btn-color: #eee;
+  --vcp-btn-border: #444;
+  --vcp-hr-color: #555;
+  --vcp-toggle-border: #666;
+  --vcp-radius: 8px;
+
+  display: inline-block;
+  background: var(--vcp-bg);
+  color: var(--vcp-text);
+  box-shadow: var(--vcp-box-shadow);
+  border-radius: var(--vcp-radius);
+  padding: 17px 10px 5px 10px;
+
+  &.light {
+    --vcp-bg: linear-gradient(180deg, #f7f7f7, #e7e7e7, #e3e3e3);
+    --vcp-text: #111;
+    --vcp-box-shadow: 0 0 3px #999;
+    --vcp-input-bg: linear-gradient(180deg, #fff, #fff);
+    --vcp-input-color: #111;
+    --vcp-input-border: #aaa;
+    --vcp-input-focus-border: #4d90fe;
+    --vcp-input-focus-shadow: #4d90fe;
+    --vcp-link-color: #007bff;
+    --vcp-btn-bg: linear-gradient(180deg, #e7e7e7, #d3d3d3);
+    --vcp-btn-color: #111;
+    --vcp-btn-border: #ccc;
+    --vcp-hr-color: #ccc;
+
+    a {
+      color: var(--vcp-link-color);
+      &:hover {
+        color: #0056b3;
       }
     }
   }
+
+  a {
+    color: var(--vcp-link-color);
+    cursor: pointer;
+  }
+
+  &.compact {
+    padding: 13px 6px 1px 6px;
+
+    hr {
+      margin: 3px 0 -3px -7px;
+    }
+  }
+
+  .top {
+    margin-bottom: 8px;
+  }
+
+  .picker-body {
+    &.simple-mode {
+      .simple-canvas-row {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .channels-row {
+    display: flex;
+    gap: 8px;
+
+    .input-col {
+      padding-top: 12px;
+      width: 144px;
+
+      &:first-child {
+        flex-shrink: 0;
+      }
+    }
+
+    .variant-col {
+      padding: 12px 16px 0 4px;
+      flex-shrink: 0;
+    }
+  }
+
+  &.compact .channels-row {
+    .input-col {
+      width: 101px;
+    }
+  }
+
+  .add-alpha-link {
+    margin-top: 19px;
+    display: block;
+    cursor: pointer;
+  }
+
+  .hsl-toggle,
+  .hsl-toggle-compact {
+    margin-top: 12px;
+    text-align: right;
+    padding-right: 13px;
+    font-size: 13px;
+
+    .btn-group {
+      display: inline-flex;
+      font-size: 0.75rem;
+
+      button {
+        padding: 0.25rem 0.5rem;
+        background: transparent;
+        border: 1px solid var(--vcp-toggle-border);
+        color: inherit;
+        cursor: pointer;
+
+        &:first-child {
+          border-radius: 3px 0 0 3px;
+        }
+
+        &:last-child {
+          border-radius: 0 3px 3px 0;
+          border-left: none;
+        }
+
+        &.active {
+          background: var(--vcp-accent);
+          border-color: var(--vcp-accent);
+          color: var(--vcp-accent-text);
+        }
+      }
+    }
+  }
+
+  .hsl-toggle-compact {
+    padding-right: 0;
+    margin-top: 5px;
+  }
+
+  hr {
+    border-color: var(--vcp-hr-color);
+    margin-left: -7px;
+    position: relative;
+    left: -3px;
+    border: none;
+    border-top: 1px solid var(--vcp-hr-color);
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 8px;
+    gap: 12px;
+
+    .mode-checkbox {
+      padding-top: 8px;
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 14px;
+
+        input[type="checkbox"] {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .hex-section {
+      flex: 1;
+
+      .hex-input {
+        display: inline-block;
+        text-align: right;
+
+        input[type="text"].hex {
+          width: 80px;
+          height: 42px;
+          padding: 0.25rem 0 0.25rem 0.375rem;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.5;
+          background: var(--vcp-input-bg);
+          color: var(--vcp-input-color);
+          border: 0.7px solid var(--vcp-input-border);
+          border-radius: 0.25rem;
+          margin-left: 8px;
+
+          &:active,
+          &:focus {
+            outline: none;
+            border: 1px solid var(--vcp-input-focus-border);
+            box-shadow: 0px 0px 5px var(--vcp-input-focus-shadow);
+          }
+        }
+      }
+    }
+
+    .value-slider {
+      flex: 1;
+      padding-top: 8px;
+    }
+
+    .ok-section {
+      padding-top: 1px;
+
+      .ok-btn {
+        background: var(--vcp-btn-bg);
+        cursor: pointer;
+        border: 1px solid var(--vcp-btn-border);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+        padding: 6px 10px 6px 20px;
+        color: var(--vcp-btn-color);
+        font-size: 14px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .swatch {
+          display: inline-block;
+          height: 15px;
+          width: 15px;
+          border-radius: 2px;
+          box-shadow: 0 0 1px #fff, inset 0 0 1px rgba(0, 0, 0, 0.5);
+          background: white;
+        }
+      }
+    }
+  }
+
+  .hex-input-compact {
+    margin-top: 8px;
+
+    input[type="text"].hex {
+      width: 100%;
+      height: 36px;
+      padding: 0.125rem 0 0.125rem 0.375rem;
+      font-size: 0.9rem;
+      line-height: 1;
+      background: var(--vcp-input-bg);
+      color: var(--vcp-input-color);
+      border: 0.7px solid var(--vcp-input-border);
+      border-radius: 0.25rem;
+
+      &:active,
+      &:focus {
+        outline: none;
+        border: 1px solid var(--vcp-input-focus-border);
+        box-shadow: 0px 0px 5px var(--vcp-input-focus-shadow);
+      }
+    }
+  }
+}
 </style>

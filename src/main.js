@@ -1,11 +1,7 @@
-import Vue from 'vue'
-import App from './App.vue'
-/*
-import rangeFlyout from 'v-range-flyout';
-Vue.use(rangeFlyout);
-*/
-Vue.config.productionTip = false;
+import { createApp } from 'vue';
+import App from './App.vue';
+import VMovable from 'v-movable';
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app');
+const app = createApp(App);
+app.use(VMovable);
+app.mount('#app');

@@ -73,6 +73,7 @@
     margin:0 0 2px 3px;
     border:solid 1px #777;
     position: relative;
+    left:16px;
     .bar{
       height:20px;
       width:10px;
