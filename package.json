@@ -38,8 +38,9 @@
     "type": "git",
     "url": "https://github.com/thewebkid/v-colorpicker.git"
   },
+  "homepage": "https://thewebkid.com/modules/v-cpicker",
   "dependencies": {
-    "modern-color": "^1.4.0",
+    "modern-color": "^1.4.1",
     "v-movable": "^1.0.2",
     "v-range-flyout": "^2.0.1"
   },

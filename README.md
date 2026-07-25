@@ -3,7 +3,7 @@
 
 ![alt text](https://thewebkid.com/v-colorpicker.png)
 
-[Live Demo](http://preview.thewebkid.com/modules/v-cpicker)
+[Live Demo](https://thewebkid.com/modules/v-cpicker)
 
 A modern, feature-rich color picker component for Vue 3, built with Vite. Rewritten from the ground up with the Composition API and modern best practices.
 
