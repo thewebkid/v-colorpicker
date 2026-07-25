@@ -2,6 +2,8 @@
 node_modules
 nodejs
 /dist
+/dist-demo
+/coverage
 
 # local env files
 .env.local

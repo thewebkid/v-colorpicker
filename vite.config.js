@@ -42,5 +42,29 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: ['./tests/setup.js'],
+      include: ['tests/**/*.{test,spec}.{js,ts}'],
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html', 'lcov'],
+        include: [
+          'src/composables/**',
+          'src/utils/**',
+          'src/components/ColorPicker.vue',
+          'src/components/AllFormatsPopover.vue',
+          'src/index.js',
+        ],
+        exclude: [
+          'src/main.js',
+          'src/App.vue',
+          'src/components/Hue.vue',
+          'src/components/HSVV.vue',
+          'src/color.js',
+        ],
+      },
+    },
   };
 });

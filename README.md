@@ -1,6 +1,6 @@
-# v-cpicker (a Vue 3 colorpicker) [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# v-cpicker (a Vue 3 colorpicker) [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![Tests](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml/badge.svg)](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![alt text](http://preview.thewebkid.com/img/colorpicker.png)
+![alt text](https://thewebkid.com/v-colorpicker.png)
 [Live Demo](http://preview.thewebkid.com/modules/v-cpicker)
 
 A modern, feature-rich color picker component for Vue 3, built with Vite. Rewritten from the ground up with the Composition API and modern best practices.
@@ -11,7 +11,7 @@ A modern, feature-rich color picker component for Vue 3, built with Vite. Rewrit
 - **Vite** - Lightning-fast builds and HMR
 - **Modern Architecture** - Inspired by Lit-based color pickers with centralized state management
 - **Latest Dependencies**:
-  - `modern-color@1.3.0` - Color parsing and conversion
+  - `modern-color@1.4.0` - Color parsing and conversion (incl. HWB)
   - `v-movable@1.0.2` - Drag and drop interactions (Vue 3 wrapper around lit-movable)
   - `v-range-flyout@2.0.1` - Range slider inputs
 - **No Bootstrap** - Removed Bootstrap/BootstrapVue dependencies
@@ -258,12 +258,20 @@ npm install
 # Start dev server
 npm run dev
 
+# Run unit tests
+npm test
+
+# Run tests with coverage report
+npm run test:coverage
+
 # Build library
 npm run build:lib
 
 # Build demo
 npm run build
 ```
+
+CI runs `npm run test:coverage` on every push and pull request to `master` / `main` via [`.github/workflows/test.yml`](.github/workflows/test.yml).
 
 ### Demo page
 
