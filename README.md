@@ -1,4 +1,5 @@
-# v-cpicker (a Vue 3 colorpicker) [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![Tests](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml/badge.svg)](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# v-cpicker  [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![Tests](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml/badge.svg)](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# (a Vue 3 colorpicker)
 
 ![alt text](https://thewebkid.com/v-colorpicker.png)
 
