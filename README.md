@@ -1,6 +1,7 @@
 # v-cpicker (a Vue 3 colorpicker) [![npm version](https://badge.fury.io/js/v-cpicker.svg)](https://badge.fury.io/js/v-cpicker) [![Tests](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml/badge.svg)](https://github.com/thewebkid/v-colorpicker/actions/workflows/test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![alt text](https://thewebkid.com/v-colorpicker.png)
+
 [Live Demo](http://preview.thewebkid.com/modules/v-cpicker)
 
 A modern, feature-rich color picker component for Vue 3, built with Vite. Rewritten from the ground up with the Composition API and modern best practices.
